@@ -10,7 +10,7 @@ Run the command: `make init`
 
 Run the command: `make runtests`
 
-or run: `python3 -m unittest test.module`
+or run the command: `python3 -m unittest test.module`
 
 
 
