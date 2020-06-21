@@ -1,13 +1,13 @@
 import unittest
 
-from module import test
+from module import example
 
 
 class module_test_cases(unittest.TestCase):
     def test_hello(self):
-        test.hello()
+        example.hello()
         pass
     
     def test_add_two(self):
-        self.assertEqual(4, test.add_two(2))
-        self.assertEqual(7, test.add_two(5))
+        self.assertEqual(4, example.add_two(2))
+        self.assertEqual(7, example.add_two(5))
