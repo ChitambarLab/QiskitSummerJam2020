@@ -1,0 +1,3 @@
+# dependencies with no version specifiers
+matplotlib
+numpy
