@@ -4,11 +4,13 @@
 
 ## Initialize Project
 
-`make init`
+Run the command: `make init`
 
 ## Run Tests
 
-`make runtests`
+Run the command: `make runtests`
+
+or run: `python3 -m unittest test.module`
 
 
 
