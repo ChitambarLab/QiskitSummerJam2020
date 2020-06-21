@@ -1,6 +1,7 @@
 def hello():
     print("hello")
 
+# returns x + 2
 def add_two(x):
     return x + 2
 
