@@ -1,16 +1,20 @@
-# Python Project Template
+# TODO: Project Title
 
-*A simple python project structure.*
+*TODO: Project catch phrase*
+
+TODO: Project description
 
 ## Initialize Project
 
-Run the command: `make init`
+With Makefile: `make init`
+
+or with pip: `pip install -r requirements.txt`
 
 ## Run Tests
 
-Run the command: `make runtests`
+With Makefile: `make test`
 
-or run the command: `python3 -m unittest test.module`
+or with python: `python3 -m unittest tests/*.py`
 
 
 
