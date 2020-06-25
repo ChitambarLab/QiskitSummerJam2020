@@ -1,3 +1,5 @@
+import numpy as np
+
 
 # @brief   Create's Alice's half of the incompatibility
 #           measurement circuit.
@@ -19,7 +21,7 @@ def bb84_states():
 # @params  y: 0 or 1. Bob's parameter. -pi/4 or -3pi/4 rotation
 # @returns 4 qubit QuantumCircuit
 def measure_circuit(y):
-    assert y == 0 or 1
+    assert y == 0 or y == 1, "Bob's input should be 0 or 1"
     qc = QuantumCircuit(4)
     theta = -1.0*(np.pi/4 + 0.5*y*np.pi)
     qc.u3(theta,0,0,range(0,4))
@@ -36,8 +38,6 @@ def run_jobs(qc,bckend):
     job_set = job_manager.run(qc, backend=bckend, name='msrincom_test')
     job_set.error_messages()
     return job_set
-
-import numpy as np
 
 # Computes the amount of violation of the measurement incompatibility bell inequality
 #
