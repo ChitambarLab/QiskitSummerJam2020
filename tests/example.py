@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from qiskit.quantum_info import Statevector
 
-from module import example
+from device_independent_test import example
 
 class module_test_cases(unittest.TestCase):
     def test_hello(self):
