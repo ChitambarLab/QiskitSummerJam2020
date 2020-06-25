@@ -3,7 +3,7 @@ import numpy as np
 
 from device_independent_test import incompatible_measurement
 
-class module_test_cases(unittest.TestCase):    
+class module_test_cases(unittest.TestCase):
 	def test_conditional_probs(self):
 		shots = 1000
 		counts = {
@@ -39,5 +39,13 @@ class module_test_cases(unittest.TestCase):
 			'1100': 14, '0101': 19, '1010': 16, '0111': 3, '1101': 103,
 			'0110': 1, '1110': 5, '1000': 91, '0011': 16
 		}
-		
+
 		self.assertEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 0.806)
+
+	def test_alice_circuit(self):
+		qc = incompatible_measurement.bb84_states()
+		test_state = Statevector.from_instruction(qc)
+		real_state = [0,0,0.5,0,0,0,0.5,0,0,0,-0.5,0,0,0,-0.5,0]
+		error = abs(test_state-real_state)
+		epsilon = 1.0E-4
+		self.assertFalse(any(x>epsilon for x in error))
