@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+from qiskit.quantum_info import Statevector
 
 from device_independent_test import incompatible_measurement
 
@@ -46,6 +47,6 @@ class module_test_cases(unittest.TestCase):
 		qc = incompatible_measurement.bb84_states()
 		test_state = Statevector.from_instruction(qc)
 		real_state = [0,0,0.5,0,0,0,0.5,0,0,0,-0.5,0,0,0,-0.5,0]
-		error = abs(test_state-real_state)
+		error = abs(test_state.data-real_state)
 		epsilon = 1.0E-4
 		self.assertFalse(any(x>epsilon for x in error))

@@ -1,5 +1,5 @@
 import numpy as np
-
+from qiskit import QuantumCircuit
 
 # @brief   Create's Alice's half of the incompatibility
 #           measurement circuit.
