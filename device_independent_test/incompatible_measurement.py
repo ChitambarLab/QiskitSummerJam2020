@@ -1,5 +1,31 @@
 import numpy as np
 
+# Computes the amount of violation of the measurement incompatibility bell inequality
+#
+#	6 >= p(0|00) + p(1|10) + p(0|20) + p(1|30) + p(1|01) + p(0|11) + p(0|21) + p(1|31)
+#
+# The quantum strategy we are applying achieves 6.818 agianst this inequality.
+#
+# Inputs:
+#	y0/y1_counts: count dictionaries qiskit, jobs().result().get_counts(circ).
+#	y0/y1_shots: number of shots used for each respective test
+#
+# Output:
+#	violation: Float, if positive, probabilities violate, if negative, no violation is present 
+def bell_violation(y0_counts, y1_counts, y0_shots, y1_shots):
+	classical_bound = 6
+
+	probs_y0 = conditional_probs(y0_counts, y0_shots)
+	probs_y1 = conditional_probs(y1_counts, y1_shots)
+
+	bell_score_y0 = probs_y0[0,0] + probs_y0[1,1] + probs_y0[0,2] + probs_y0[1,3]
+	bell_score_y1 = probs_y1[1,0] + probs_y1[0,1] + probs_y1[0,2] + probs_y1[1,3]
+
+	violation = bell_score_y0 + bell_score_y1 - classical_bound
+
+	return violation
+
+
 # Inputs:
 #	counts: Dictionary, value from qiskit, jobs().result().get_counts(circ).
 #	shots: Integer, number of shots used while executing the job
