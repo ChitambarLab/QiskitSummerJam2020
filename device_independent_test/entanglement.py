@@ -1,42 +1,103 @@
-from qiskit import QuantumCircuit
+import numpy as np
+from qiskit import IBMQ, QuantumCircuit, execute
+from qiskit.tools.monitor import job_monitor
+from qiskit.providers.ibmq.managed import IBMQJobManager
 
-# create two-qubit entangled circuit
-def create_entangled_circuit():
-  qc = QuantumCircuit(2)
-  qc.h(0)
-  qc.cx(0,1)
-  return qc
+class EntanglementTest:
+    @staticmethod
+    def create_bell_state():
+        """Creates two qubit bell state
 
-# measure a given circuit in the ZW basis
-def measure_in_ZW(qc):
-  qc.s(1)
-  qc.h(1)
-  qc.t(1)
-  qc.h(1)
-  return qc.measure_all()
+        Returns:
+            QuantumCircuit: created circuit
+        """
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0,1)
+        return circuit
 
-# measure a given circuit in the ZV basis
-def measure_in_ZV(qc):
-  qc.s(1)
-  qc.h(1)
-  qc.tdg(1)
-  qc.h(1)
-  return qc.measure_all()
+    @staticmethod
+    def compute_expectation_for_CHSH(counts, shots):
+        return (counts["00"] + counts["11"] - counts["01"] - counts["10"])/shots
 
-# measure a given circuit in the XW basis
-def measure_in_XW(qc):
-  qc.h(0)
-  qc.s(1)
-  qc.h(1)
-  qc.t(1)
-  qc.h(1)
-  return qc.measure_all()
+    def __init__(self):
+        self.provider = IBMQ.load_account()
+        self.job_set = None
 
-# measure a given circuit in the XV basis
-def measure_in_XV(qc):
-  qc.h(0)
-  qc.s(1)
-  qc.h(1)
-  qc.tdg(1)
-  qc.h(1)
-  return qc.measure_all()
+    def run_CHSH_test(self, backend="ibmq_qasm_simulator", shots=1000):
+        qc1 = self.measure_in_ZW()
+        qc2 = self.measure_in_ZV()
+        qc3 = self.measure_in_XW()
+        qc4 = self.measure_in_XV()
+
+        self.run_jobs([qc1, qc2, qc3, qc4], backend, shots, name="CHSH")
+        
+        results = self.job_set.results()
+        expected_ZW = self.compute_expectation_for_CHSH(results.get_counts(0), shots)
+        expected_ZV = self.compute_expectation_for_CHSH(results.get_counts(1), shots)
+        expected_XW = self.compute_expectation_for_CHSH(results.get_counts(2), shots)
+        expected_XV = self.compute_expectation_for_CHSH(results.get_counts(3), shots)
+
+        return {
+            "received": (expected_ZW + expected_ZV + expected_XW - expected_XV),
+            "expected": 2*np.sqrt(2)
+        }
+
+    def measure_in_ZW(self):
+        circuit = self.create_bell_state()
+        circuit.s(1)
+        circuit.h(1)
+        circuit.t(1)
+        circuit.h(1)
+        circuit.measure_all()
+        return circuit
+
+    def measure_in_ZV(self):
+        circuit = self.create_bell_state()
+        circuit.s(1)
+        circuit.h(1)
+        circuit.tdg(1)
+        circuit.h(1)
+        circuit.measure_all()
+        return circuit
+
+    def measure_in_XW(self):
+        circuit = self.create_bell_state()
+        circuit.h(0)
+        circuit.s(1)
+        circuit.h(1)
+        circuit.t(1)
+        circuit.h(1)
+        circuit.measure_all()
+        return circuit
+
+    def measure_in_XV(self):
+        circuit = self.create_bell_state()
+        circuit.h(0)
+        circuit.s(1)
+        circuit.h(1)
+        circuit.tdg(1)
+        circuit.h(1)
+        circuit.measure_all()
+        return circuit
+
+    def run_jobs(self, circuits, backend, shots, name):
+        """Run jobs using IBMQJobManager
+
+        Args:
+            circuits ([QuantumCircuit]): circuits to run
+            backend (string): device name
+            shots (int, optional): number of shots
+
+        Returns:
+            ManagedJobSet: set of jobs to be executed
+        """
+        job_manager = IBMQJobManager()
+        self.job_set = job_manager.run(
+            circuits,
+            backend=self.provider.get_backend(backend),
+            shots=shots,
+            name=name
+        )
+        self.job_set.error_messages()
+
