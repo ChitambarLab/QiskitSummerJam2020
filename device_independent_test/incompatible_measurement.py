@@ -1,5 +1,6 @@
 import numpy as np
-from qiskit import IBMQJobManager, QuantumCircuit
+from qiskit import QuantumCircuit
+from qiskit.providers.ibmq.managed import IBMQJobManager
 
 # @brief   Create's Alice's half of the incompatibility
 #           measurement circuit.
