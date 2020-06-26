@@ -43,7 +43,7 @@ def run_jobs(qc,bckend):
 #
 #	6 >= p(0|00) + p(1|10) + p(0|20) + p(1|30) + p(1|01) + p(0|11) + p(0|21) + p(1|31)
 #
-# The quantum strategy we are applying achieves 6.818 agianst this inequality.
+# The quantum strategy we are applying achieves 6.828 agianst this inequality.
 #
 # Inputs:
 #	y0/y1_counts: count dictionaries qiskit, jobs().result().get_counts(circ).
@@ -54,16 +54,27 @@ def run_jobs(qc,bckend):
 def bell_violation(y0_counts, y1_counts, y0_shots, y1_shots):
 	classical_bound = 6
 
-	probs_y0 = conditional_probs(y0_counts, y0_shots)
-	probs_y1 = conditional_probs(y1_counts, y1_shots)
+	y0_probs = conditional_probs(y0_counts, y0_shots)
+	y1_probs = conditional_probs(y1_counts, y1_shots)
 
-	bell_score_y0 = probs_y0[0,0] + probs_y0[1,1] + probs_y0[0,2] + probs_y0[1,3]
-	bell_score_y1 = probs_y1[1,0] + probs_y1[0,1] + probs_y1[0,2] + probs_y1[1,3]
-
-	violation = bell_score_y0 + bell_score_y1 - classical_bound
+	violation = bell_score(y0_probs, y1_probs) - classical_bound
 
 	return violation
 
+# Computes the score against the measurement incompatibility bell inequality
+#
+# Inputs:
+#	y0/1_probs: np.array() contains conditional outcome probabilities for the test
+#
+# Output:
+#	bell_score: float, the value computed against the bell inequality
+def bell_score(y0_probs, y1_probs):
+	y0_facet_mask = np.array([[1,0,1,0],[0,1,0,1]])
+	y1_facet_mask = np.array([[0,1,1,0],[1,0,0,1]])
+
+	bell_score = np.sum(y0_facet_mask * y0_probs + y1_facet_mask * y1_probs)
+
+	return bell_score
 
 # Inputs:
 #	counts: Dictionary, value from qiskit, jobs().result().get_counts(circ).

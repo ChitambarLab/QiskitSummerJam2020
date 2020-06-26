@@ -41,7 +41,16 @@ class module_test_cases(unittest.TestCase):
 			'0110': 1, '1110': 5, '1000': 91, '0011': 16
 		}
 
-		self.assertEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 0.806)
+		self.assertAlmostEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 0.806)
+
+
+	def test_bell_score(self):
+		y0_probs = np.array([[1,0,1,0],[0,1,0,1]])
+		y1_probs = np.array([[0,1,1,0],[1,0,0,1]])
+
+		bell_score = incompatible_measurement.bell_score(y0_probs, y1_probs)
+
+		self.assertEqual(bell_score, 8)
 
 	def test_alice_circuit(self):
 		qc = incompatible_measurement.bb84_states()
