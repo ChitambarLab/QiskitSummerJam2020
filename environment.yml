@@ -1,0 +1,17 @@
+name: static-site-generation
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - python=3
+  - jupyter
+  - numpy
+  - matplotlib
+  - nbconvert
+  - pip
+  - pip:
+    - qiskit
+    - mkdocs
+    - mkdocs-material
+    - jupyter_contrib_nbextensions
+    - jupyter-contrib-nbextensions
