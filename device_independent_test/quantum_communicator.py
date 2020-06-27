@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from qiskit import QuantumCircuit, execute
-from qiskit.providers.ibmq.managed import IBMQJobManager
 
 class QuantumCommunicator(ABC):
     # Abstract base class to define the functionality of a
