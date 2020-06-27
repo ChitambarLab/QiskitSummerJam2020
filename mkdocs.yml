@@ -1,0 +1,20 @@
+site_name: Static Website
+theme:
+  name: "material"
+  palette:
+    primary: "blue"
+    accent: "indigo"
+use_directory_urls: false
+nav:
+  - Home: index.md
+  - Entanglement: Entanglement.md
+  - Theory for Measurement Incompatibility Test: Theory_for_Incompatible_Measurement_Test.md
+markdown_extensions:
+  - admonition
+  - pymdownx.arithmatex
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML
