@@ -1,0 +1,661 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.3.3">
+    
+    
+      
+        <title>Theory for Measurement Incompatibility Test - Static Website</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a-single-qubit-bell-violation-as-a-device-independent-test" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="." title="Static Website" class="md-header-nav__button md-logo" aria-label="Static Website">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Static Website
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Theory for Measurement Incompatibility Test
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Static Website" class="md-nav__button md-logo" aria-label="Static Website">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Static Website
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="index.html" title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="Entanglement.html" title="Entanglement" class="md-nav__link">
+      Entanglement
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Theory for Measurement Incompatibility Test
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="Theory_for_Incompatible_Measurement_Test.html" title="Theory for Measurement Incompatibility Test" class="md-nav__link md-nav__link--active">
+      Theory for Measurement Incompatibility Test
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-assumptions" class="md-nav__link">
+    Test Assumptions:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note-supporting-software" class="md-nav__link">
+    Note: Supporting Software
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-setting" class="md-nav__link">
+    Test Setting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-classical-bound" class="md-nav__link">
+    The Classical Bound
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantum-violation" class="md-nav__link">
+    Quantum Violation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analyzing-the-quantum-violation" class="md-nav__link">
+    Analyzing the Quantum Violation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#violation-occurs-for-bb84-states-and-incompatible-measurements" class="md-nav__link">
+    Violation Occurs for BB84 States and Incompatible Measurements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-violation-occurs-for-classical-states" class="md-nav__link">
+    No Violation Occurs for Classical States
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-assumptions" class="md-nav__link">
+    Test Assumptions:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note-supporting-software" class="md-nav__link">
+    Note: Supporting Software
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-setting" class="md-nav__link">
+    Test Setting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-classical-bound" class="md-nav__link">
+    The Classical Bound
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantum-violation" class="md-nav__link">
+    Quantum Violation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analyzing-the-quantum-violation" class="md-nav__link">
+    Analyzing the Quantum Violation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#violation-occurs-for-bb84-states-and-incompatible-measurements" class="md-nav__link">
+    Violation Occurs for BB84 States and Incompatible Measurements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-violation-occurs-for-classical-states" class="md-nav__link">
+    No Violation Occurs for Classical States
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="a-single-qubit-bell-violation-as-a-device-independent-test">A Single-Qubit Bell Violation as a Device-Independent Test<a class="headerlink" href="#a-single-qubit-bell-violation-as-a-device-independent-test" title="Permanent link">&para;</a></h1>
+<p>This notebook describe the quantum violation of a novel bell inequality bounding classical communication systems. The Bell violation does not require entanglement and is achieved by incompatible measurements and qubit superposition alone.</p>
+<p>Generally, a Bell violation describes non-classical measurement statistics which can only be achieved by a quantum system. That is, Alice and Bob cannot violate a Bell inequality using a classical system and shared randomness. The quantum-classical separation allows for a strong device independent test to be setup provided the following assumptions hold:</p>
+<h3 id="test-assumptions">Test Assumptions:<a class="headerlink" href="#test-assumptions" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Alice and Bob receive independent input drawn from uniform random distributions.</li>
+<li>Alice sends Bob no more than 1-bit or 1-qubit.</li>
+</ol>
+<p>If the assumptions are met, a single-qubit bell violation is sufficient to classify the bipartite communication system as a quantum communication system capable of superposition and incompatible measurements.</p>
+<p>In an ideal implementation where the communication channel is proven to be limited, Alice and Bob do not need to be trusted. If it is not possible to verify the channel capacity, then Alice or Bob must be trusted for the test to work. </p>
+<h3 id="note-supporting-software">Note: Supporting Software<a class="headerlink" href="#note-supporting-software" title="Permanent link">&para;</a></h3>
+<p>The following Bell inequality and quantum violation were found using the open-source julia package, <a href="https://github.com/ChitambarLab/BellScenario.jl">BellScenario.jl</a>. This package is currently in an alpha version and is unfortunately experiencing a bug which prevents proper execution within a Jupyter notebook. The result is reported in the following cells.</p>
+<h2 id="test-setting">Test Setting<a class="headerlink" href="#test-setting" title="Permanent link">&para;</a></h2>
+<p>We consider a single-qubit scenario where Alice and Bob each have a black-box with classical inputs and outputs. Alice is given an input, <span><span class="MathJax_Preview">x\in\{0,1,2,3\}</span><script type="math/tex">x\in\{0,1,2,3\}</script></span> and encodes the value in a qubit, <span><span class="MathJax_Preview">\rho_x</span><script type="math/tex">\rho_x</script></span>. The qubit is sent to Bob via some communication channel. Bob receives the qubit and performs a projective measurement based on the input <span><span class="MathJax_Preview">y\in\{0,1\}</span><script type="math/tex">y\in\{0,1\}</script></span>. The outcome of the measurement, <span><span class="MathJax_Preview">b\in\{0,1\}</span><script type="math/tex">b\in\{0,1\}</script></span> is output by Bob.</p>
+<p><img src="img/qubit_bell_violation.png" alt="Drawing" style="width: 400px;"/></p>
+<p>This black-box scenario is characterized in a device-independent way by considering its set of conditional probabilities <span><span class="MathJax_Preview">\{p(b|xy)\}</span><script type="math/tex">\{p(b|xy)\}</script></span>. The conditional probability distribution or behavior of a black-box device can be considered as a vector <span><span class="MathJax_Preview">\vec{p}</span><script type="math/tex">\vec{p}</script></span> where each element corresponds to a different probability <span><span class="MathJax_Preview">p(b|xy)</span><script type="math/tex">p(b|xy)</script></span>.</p>
+<h2 id="the-classical-bound">The Classical Bound<a class="headerlink" href="#the-classical-bound" title="Permanent link">&para;</a></h2>
+<p>The classical set of probabilities <span><span class="MathJax_Preview">\mathcal{C}</span><script type="math/tex">\mathcal{C}</script></span> is the convex hull of the deterministic black-box behaviors, <span><span class="MathJax_Preview">\mathcal{C} = \text{conv}(\vec{p}_D)</span><script type="math/tex">\mathcal{C} = \text{conv}(\vec{p}_D)</script></span>. A behavior is deterministic if <span><span class="MathJax_Preview">p(b|xy)\in \{0,1\}</span><script type="math/tex">p(b|xy)\in \{0,1\}</script></span> for all <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>, <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>, and <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>. The deterministic behaviors of a black-box scenario are finite and therefore describe a convex polytope.</p>
+<p>A Bell inequality is a linear inequality that bounds the classical polytope for a black-box scenario. Given the inputs, outputs, and communication between Alice and Bob, the bell inequalities can be computed. The procedure is to first enumerate the deterministic behaviors, then use a polytope transformation algorithm to find the bounding inequalities. The vertices and facets used for this result are computed using the <a href="https://github.com/ChitambarLab/BellScenario.jl">BellScenario.jl</a> julia package.</p>
+<p>A significant Bell inequality for which there is a quantum violation is expressed,</p>
+<div>
+<div class="MathJax_Preview">
+6 \geq \Big(p(0|00) + p(1|10) + p(0|20) + p(1|30)\Big) + \Big(p(1|01) + p(0|11) + p(0|21) + p(1|31)\Big).
+</div>
+<script type="math/tex; mode=display">
+6 \geq \Big(p(0|00) + p(1|10) + p(0|20) + p(1|30)\Big) + \Big(p(1|01) + p(0|11) + p(0|21) + p(1|31)\Big).
+</script>
+</div>
+<p>This inequality may be daunting, but it can be broken down by Bob's input <span><span class="MathJax_Preview">y=0</span><script type="math/tex">y=0</script></span> (left) and <span><span class="MathJax_Preview">y=1</span><script type="math/tex">y=1</script></span> (right). It is important to reiterate that Alice and Bob do not know each other's input. Alice's Best strategy is to use an encoding such as <span><span class="MathJax_Preview">0,2 \rightarrow |0\rangle</span><script type="math/tex">0,2 \rightarrow |0\rangle</script></span> and <span><span class="MathJax_Preview">1,3 \rightarrow |1\rangle</span><script type="math/tex">1,3 \rightarrow |1\rangle</script></span>, while Bob performs and identity decoding for <span><span class="MathJax_Preview">y=0</span><script type="math/tex">y=0</script></span> and an inverted decoding for <span><span class="MathJax_Preview">y=1</span><script type="math/tex">y=1</script></span>. Explicitly, the identity decoder is <span><span class="MathJax_Preview">\{|0\rangle\langle0|,|1\rangle\langle1|\}</span><script type="math/tex">\{|0\rangle\langle0|,|1\rangle\langle1|\}</script></span> and the inverting decoder is <span><span class="MathJax_Preview">\{|0\rangle\langle1|,|1\rangle\langle0| \}</span><script type="math/tex">\{|0\rangle\langle1|,|1\rangle\langle0| \}</script></span>. However, a closer look at the bell inequality reveals that when <span><span class="MathJax_Preview">y=1</span><script type="math/tex">y=1</script></span>, a violation would require Bob to be able to invert only the received but only when Alice has input <span><span class="MathJax_Preview">x\in\{0,1\}</span><script type="math/tex">x\in\{0,1\}</script></span>. Bob does not know Alice's inputs, so there is no way for Bob to condition a decoding strategy on Alice's input. As a result, classical communication limited systems cannot violate the bell inequality.</p>
+<p>In the case where Alice is able to share the input <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> with Bob, a conditional decoding strategy could be applied and a violation would occur. This edge case is precisely why the communication channel must be proven to limited to to a single bit or qubit of information.</p>
+<h2 id="quantum-violation">Quantum Violation<a class="headerlink" href="#quantum-violation" title="Permanent link">&para;</a></h2>
+<p>Quantum mechanics can violate the discussed Bell inequality using the following protocol. This protocol was computed using the <a href="https://github.com/ChitambarLab/BellScenario.jl">BellScenario.jl</a> julia package to optimize the quantum violation using semi-definite programming. </p>
+<p>Alice encodes the input <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> into a BB84 qubit state <span><span class="MathJax_Preview">|\psi_x\rangle</span><script type="math/tex">|\psi_x\rangle</script></span> where <span><span class="MathJax_Preview">|\psi_0\rangle = |0\rangle</span><script type="math/tex">|\psi_0\rangle = |0\rangle</script></span>, <span><span class="MathJax_Preview">|\psi_1\rangle =|1\rangle</span><script type="math/tex">|\psi_1\rangle =|1\rangle</script></span>, <span><span class="MathJax_Preview">|\psi_2\rangle = |+\rangle</span><script type="math/tex">|\psi_2\rangle = |+\rangle</script></span>, <span><span class="MathJax_Preview">|\psi_3\rangle = |-\rangle</span><script type="math/tex">|\psi_3\rangle = |-\rangle</script></span>. Bob measures with a projective measurement onto a basis rotated off the BB84 states by an angle <span><span class="MathJax_Preview">\theta=\pi/4</span><script type="math/tex">\theta=\pi/4</script></span>. The measurement bases for each input <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> are expressed</p>
+<div>
+<div class="MathJax_Preview">
+\begin{align}
+    &amp;|\Pi_0^{y=0}\rangle = \cos(\pi/8)|0\rangle + \sin(\pi/8)|1\rangle, \quad |\Pi_1^{y=0}\rangle = \sin(\pi/8)|0\rangle - \cos(\pi/8)|1\rangle \\
+    &amp;|\Pi_0^{y=1}\rangle = \cos(3\pi/8)|0\rangle + \sin(3\pi/8)|1\rangle, \quad |\Pi_1^{y=1}\rangle = \sin(3\pi/8)|0\rangle - \cos(3\pi/8)|1\rangle \\
+\end{align}
+</div>
+<script type="math/tex; mode=display">
+\begin{align}
+    &|\Pi_0^{y=0}\rangle = \cos(\pi/8)|0\rangle + \sin(\pi/8)|1\rangle, \quad |\Pi_1^{y=0}\rangle = \sin(\pi/8)|0\rangle - \cos(\pi/8)|1\rangle \\
+    &|\Pi_0^{y=1}\rangle = \cos(3\pi/8)|0\rangle + \sin(3\pi/8)|1\rangle, \quad |\Pi_1^{y=1}\rangle = \sin(3\pi/8)|0\rangle - \cos(3\pi/8)|1\rangle \\
+\end{align}
+</script>
+</div>
+<p>Since the quantum states consist of <span><span class="MathJax_Preview">|0/1\rangle</span><script type="math/tex">|0/1\rangle</script></span> and <span><span class="MathJax_Preview">|+/-\rangle</span><script type="math/tex">|+/-\rangle</script></span> bases, they require superposition to construct. Likewise, the quantum measurements are incompatible because the two measurement sets align with rotated <span><span class="MathJax_Preview">|0/1\rangle</span><script type="math/tex">|0/1\rangle</script></span> and <span><span class="MathJax_Preview">|+/-\rangle</span><script type="math/tex">|+/-\rangle</script></span> bases and therefore do not commute. On Bloch sphere, the states and measurements lie within the <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>-<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>-plane and take the following orientation.</p>
+<p><img src="img/quantum_protocol_qubit_violation.png" alt="Drawing" style="width: 600px;"/></p>
+<p>The conditional probabilities of each outcome are computed through the inner product, <span><span class="MathJax_Preview">p(b|xy) = |\langle\Pi_b^y|\psi_x\rangle|^2 = \cos^2(\phi/2)</span><script type="math/tex">p(b|xy) = |\langle\Pi_b^y|\psi_x\rangle|^2 = \cos^2(\phi/2)</script></span>, where <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> is the angle of separation between <span><span class="MathJax_Preview">|\psi_x\rangle</span><script type="math/tex">|\psi_x\rangle</script></span>, and <span><span class="MathJax_Preview">|\Pi_b^y\rangle</span><script type="math/tex">|\Pi_b^y\rangle</script></span> on Bloch sphere. By the symmetry of the BB84 states <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> can be one of two values <span><span class="MathJax_Preview">\pi/4</span><script type="math/tex">\pi/4</script></span> or <span><span class="MathJax_Preview">3\pi/4</span><script type="math/tex">3\pi/4</script></span>, therefore, <span><span class="MathJax_Preview">p(b|xy)\in \{\cos^2(\pi/8),\cos^2(3\pi/8)\}</span><script type="math/tex">p(b|xy)\in \{\cos^2(\pi/8),\cos^2(3\pi/8)\}</script></span>. Computing the conditional probabilities for the classical bound, it is found that each of the probabilities in the inequality take on the value <span><span class="MathJax_Preview">p(b|xy) = \cos^2(\pi/8)</span><script type="math/tex">p(b|xy) = \cos^2(\pi/8)</script></span>. Summing up all of the conditional probabilities in the inequality, a violation is found, </p>
+<div>
+<div class="MathJax_Preview">
+8\cos^2(\pi/8) = 6.818 \nleq 6.
+</div>
+<script type="math/tex; mode=display">
+8\cos^2(\pi/8) = 6.818 \nleq 6.
+</script>
+</div>
+<p>The protocol violates the classical bound by <span><span class="MathJax_Preview">13.6\%</span><script type="math/tex">13.6\%</script></span>.</p>
+<p>The quantum violation occurs with a single qubit. There is no entanglement, only superposition and measurement incompatibility.</p>
+<h2 id="analyzing-the-quantum-violation">Analyzing the Quantum Violation<a class="headerlink" href="#analyzing-the-quantum-violation" title="Permanent link">&para;</a></h2>
+<p>This analysis shows:
+1. The quantum protocol violates and is optimal for the bb84 states.
+2. Using compatible measurments with the BB84 states does not enable violation.
+3. Using classical states with compatible or incompatible measurements does not enable violation.</p>
+<p>It can be concluded that superposition and measurement incompatibility are both required for a violation to occur in this protocol. </p>
+<div class="codehilite"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">context</span>
+<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">incompatible_measurement</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Setup</span>
+
+<span class="c1"># Alice&#39;s qubits states</span>
+<span class="err">ψ</span><span class="mi">0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="err">ψ</span><span class="mi">1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="err">ψ</span><span class="mi">2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="err">ψ</span><span class="mi">3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Quantum state Encodings</span>
+<span class="err">ψ</span><span class="n">_bb84</span> <span class="o">=</span> <span class="p">[</span><span class="err">ψ</span><span class="mi">0</span><span class="p">,</span> <span class="err">ψ</span><span class="mi">1</span><span class="p">,</span> <span class="err">ψ</span><span class="mi">2</span><span class="p">,</span> <span class="err">ψ</span><span class="mi">3</span><span class="p">]</span>
+<span class="err">ψ</span><span class="n">_classical</span> <span class="o">=</span> <span class="p">[</span><span class="err">ψ</span><span class="mi">0</span><span class="p">,</span> <span class="err">ψ</span><span class="mi">1</span><span class="p">,</span> <span class="err">ψ</span><span class="mi">0</span><span class="p">,</span> <span class="err">ψ</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Bob&#39;s projective measurements Πby</span>
+<span class="err">Π</span><span class="mo">00</span> <span class="o">=</span> <span class="k">lambda</span> <span class="err">θ</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="err">θ</span><span class="p">)]</span>
+<span class="err">Π</span><span class="mi">10</span> <span class="o">=</span> <span class="k">lambda</span> <span class="err">θ</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="err">θ</span><span class="p">)]</span>
+<span class="err">Π</span><span class="mo">01</span> <span class="o">=</span> <span class="k">lambda</span> <span class="err">θ</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="err">θ</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="err">θ</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)]</span>
+<span class="err">Π</span><span class="mi">11</span> <span class="o">=</span> <span class="k">lambda</span> <span class="err">θ</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="err">θ</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="err">θ</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)]</span>
+
+<span class="c1"># incompatible projective measurments </span>
+<span class="n">y0_Π</span> <span class="o">=</span> <span class="p">[</span><span class="err">Π</span><span class="mo">00</span><span class="p">,</span><span class="err">Π</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">y1_Π</span> <span class="o">=</span> <span class="p">[</span><span class="err">Π</span><span class="mo">01</span><span class="p">,</span><span class="err">Π</span><span class="mi">11</span><span class="p">]</span>
+
+<span class="c1"># measurement compatible with y0_Π</span>
+<span class="n">y1_cl_Π</span> <span class="o">=</span> <span class="p">[</span><span class="err">Π</span><span class="mi">11</span><span class="p">,</span><span class="err">Π</span><span class="mo">01</span><span class="p">]</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Computing scores against the bell inequality</span>
+
+<span class="c1"># bb84 states with in/compatible measurements</span>
+<span class="n">bb84_incompatible_scores</span> <span class="o">=</span> <span class="p">[]</span> 
+<span class="n">bb84_compatible_scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># classical states with in/compatible measurements</span>
+<span class="n">cl_compatible_scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cl_incompatible_scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">classical_bound</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Measurement angle on a hilbert space</span>
+<span class="err">θ</span><span class="n">_series</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2048</span><span class="p">)</span>
+
+<span class="c1"># computing the bell scores as the measurements are rotated about the y-axis.</span>
+<span class="k">for</span> <span class="err">θ</span> <span class="ow">in</span> <span class="err">θ</span><span class="n">_series</span><span class="p">:</span>
+
+    <span class="c1"># conditional probability matrices</span>
+    <span class="n">y0_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">y0_cl_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="n">y1_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">y1_cl_incomp_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">y1_comp_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">y1_cl_comp_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+        <span class="err">ψ</span><span class="n">x_bb84</span> <span class="o">=</span> <span class="err">ψ</span><span class="n">_bb84</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+        <span class="err">ψ</span><span class="n">x_cl</span> <span class="o">=</span> <span class="err">ψ</span><span class="n">_classical</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+            <span class="c1"># y=0 measurement</span>
+            <span class="err">Π</span><span class="n">b0</span> <span class="o">=</span> <span class="n">y0_Π</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+            <span class="n">y0_probs</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="err">Π</span><span class="n">b0</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="err">ψ</span><span class="n">x_bb84</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">y0_cl_probs</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="err">Π</span><span class="n">b0</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="err">ψ</span><span class="n">x_cl</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+            <span class="c1"># y=1 incompatible measurement</span>
+            <span class="err">Π</span><span class="n">b1</span> <span class="o">=</span> <span class="n">y1_Π</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+            <span class="n">y1_probs</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="err">Π</span><span class="n">b1</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="err">ψ</span><span class="n">x_bb84</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">y1_cl_incomp_probs</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="err">Π</span><span class="n">b1</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="err">ψ</span><span class="n">x_cl</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+            <span class="c1"># y=1 compatible measurement</span>
+            <span class="err">Π</span><span class="n">b1_comp</span> <span class="o">=</span> <span class="n">y1_cl_Π</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+            <span class="n">y1_comp_probs</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="err">Π</span><span class="n">b1_comp</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="err">ψ</span><span class="n">x_bb84</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">y1_cl_comp_probs</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="err">Π</span><span class="n">b1_comp</span><span class="p">(</span><span class="err">θ</span><span class="p">),</span><span class="err">ψ</span><span class="n">x_cl</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+
+    <span class="n">bb84_incompatible_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bell_score</span><span class="p">(</span><span class="n">y0_probs</span><span class="p">,</span> <span class="n">y1_probs</span><span class="p">))</span>
+    <span class="n">bb84_compatible_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bell_score</span><span class="p">(</span><span class="n">y0_probs</span><span class="p">,</span> <span class="n">y0_probs</span><span class="p">))</span>
+
+    <span class="n">cl_incompatible_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bell_score</span><span class="p">(</span><span class="n">y0_cl_probs</span><span class="p">,</span> <span class="n">y1_cl_incomp_probs</span><span class="p">))</span>
+    <span class="n">cl_compatible_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bell_score</span><span class="p">(</span><span class="n">y0_cl_probs</span><span class="p">,</span> <span class="n">y1_cl_comp_probs</span><span class="p">))</span>
+
+    <span class="n">classical_bound</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h2 id="violation-occurs-for-bb84-states-and-incompatible-measurements">Violation Occurs for BB84 States and Incompatible Measurements<a class="headerlink" href="#violation-occurs-for-bb84-states-and-incompatible-measurements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The discussed quantum protocol violates with the <code>Max Quantum Violation</code> of <span><span class="MathJax_Preview">6.818</span><script type="math/tex">6.818</script></span>.</li>
+<li>The <code>Incompatible Measurements</code> plot shows that if measurments are rotated in either direction, the violation decreases. This implies that the discussed protocol has been aligned in the optimal fashion.</li>
+<li>The <code>Compatible Measurments</code> plot shows that there is no rotation angle for which compatible measurements can violate the quantum bound.</li>
+</ul>
+<p>The conclusion is that superposition is necessary for this violation, but is not sufficient on its own. Measurment incompatiblity must also be applied.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">bb84_incomp_plt</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="err">θ</span><span class="n">_series</span><span class="p">,</span> <span class="n">bb84_incompatible_scores</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Incomp Measurment&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">)</span>
+<span class="n">cl_bound_plt</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="err">θ</span><span class="n">_series</span><span class="p">,</span> <span class="n">classical_bound</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Classical Bound&#39;</span><span class="p">)</span>
+
+<span class="n">max_violation</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span><span class="mf">6.828</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Max Quantum Violation&quot;</span><span class="p">)</span>
+<span class="n">bb84_comp_plt</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="err">θ</span><span class="n">_series</span><span class="p">,</span> <span class="n">bb84_compatible_scores</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Comp Measurement&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">max_violation</span><span class="p">,</span> <span class="n">bb84_incomp_plt</span><span class="p">,</span> <span class="n">cl_bound_plt</span><span class="p">,</span> <span class="n">bb84_comp_plt</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;Max Quantum Violation&#39;</span><span class="p">,</span><span class="s1">&#39;Incompatible Measurements&#39;</span><span class="p">,</span> <span class="s1">&#39;Classical Bound&#39;</span><span class="p">,</span> <span class="s1">&#39;Compatible Measurements&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Measurement Rotation Angle (radians)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bell Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Quantum State Measurements vs. Angle&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+<p><img alt="png" src="Theory_for_Incompatible_Measurement_Test_files/Theory_for_Incompatible_Measurement_Test_9_0.png" /></p>
+<h2 id="no-violation-occurs-for-classical-states">No Violation Occurs for Classical States<a class="headerlink" href="#no-violation-occurs-for-classical-states" title="Permanent link">&para;</a></h2>
+<p>We now discuss the below plot for measurements on classical states used in this protocol.</p>
+<ul>
+<li>The <code>Incompatible Measurements</code> plot shows that if classical states are used, Bob cannot create a violation using incompatible mesurments.</li>
+<li>The <code>Compatible Measurments</code> plot shows that if classical states are used, Bob cannot create a violation using compatible measurements.</li>
+</ul>
+<p>The conclusion is that classical states cannot be used to violate with or without measurement incompatibility.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># plot of quantum violation if classical measurements are used or classical states</span>
+
+<span class="n">cl_incomp_plt</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="err">θ</span><span class="n">_series</span><span class="p">,</span> <span class="n">cl_incompatible_scores</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;cl incomp&quot;</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">cl_bound_plt</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="err">θ</span><span class="n">_series</span><span class="p">,</span> <span class="n">classical_bound</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Classical Bound&#39;</span><span class="p">)</span>
+<span class="n">cl_comp_plt</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="err">θ</span><span class="n">_series</span><span class="p">[::</span><span class="mi">64</span><span class="p">],</span> <span class="n">cl_compatible_scores</span><span class="p">[::</span><span class="mi">64</span><span class="p">],</span> <span class="s1">&#39;rx&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;cl comp&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">cl_bound_plt</span><span class="p">,</span> <span class="n">cl_incomp_plt</span><span class="p">,</span> <span class="n">cl_comp_plt</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;Classical Bound&#39;</span><span class="p">,</span> <span class="s1">&#39;Incompatible Measurements&#39;</span><span class="p">,</span> <span class="s1">&#39;Compatible Measurements&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Measurement Rotation Angle (radians)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bell Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Classical State Measurements vs. Angle&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+
+<p><img alt="png" src="Theory_for_Incompatible_Measurement_Test_files/Theory_for_Incompatible_Measurement_Test_11_0.png" /></p>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="Entanglement.html" title="Entanglement" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Entanglement
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="assets/javascripts/bundle.4a5ba8d6.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.9b3611bd.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+    
+  </body>
+</html>
