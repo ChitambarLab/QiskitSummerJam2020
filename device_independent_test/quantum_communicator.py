@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from qiskit import QuantumCircuit, execute
-from qiskit.providers.ibmq.managed import IBMQJobManager
 
-class QuantumCommunicator(ABC):
+class QuantumDispatcher(ABC):
     # Abstract base class to define the functionality of a
     # ficitonal device which communicates states between quantum computers
 
@@ -35,7 +34,6 @@ class QuantumCommunicator(ABC):
     #                            each column is an pair of operations to run
     #                            each element in the array is a list of operations for a single device
     # @Returns  Counts from running on all devices
-    #           Shots are fixed at 1000 per circuit
     @abstractmethod
     def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
         pass
@@ -47,7 +45,6 @@ class QuantumCommunicator(ABC):
     #           pre_operations: array of all different operations to run before transmission
     #           post_operations: multidimensional array of all operations to run after transmission
     # @return   Counts from running on all devices
-    # @note     Shots are fixed at 1000 per circuit
     @abstractmethod
     def batch_run_and_transmit(self,input_register,output_registers,pre_operations,post_operations,shot):
         pass
@@ -57,7 +54,7 @@ class QuantumCommunicator(ABC):
         self.devices = new_backends
 
 
-class LocalCommunicator(QuantumCommunicator):
+class LocalDispatcher(QuantumDispatcher):
     # Concrete derived class from QuantumCommunicator
     # Runs circuits on a single computer
     # Note that input_registers and output_registers are not used
@@ -88,6 +85,14 @@ class LocalCommunicator(QuantumCommunicator):
 
         return job.result().get_counts(qc)
 
+    # @brief    Method for running multiple circuits
+    # @params   input_registers: registers to transmit states from
+    #           output_registers: registers to transmit states to
+    #           pre_operations: array of operations to run before transmision
+    #           post_operations: multidimensional array of operations to run after transmission
+    #                            each column is an pair of operations to run
+    #                            each element in the array is a list of operations for a single device
+    # @Returns  Counts from running on all devices
     def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
         # compose circuits from the input operations
         circuits = []
@@ -99,9 +104,6 @@ class LocalCommunicator(QuantumCommunicator):
             circuits.append(qc)
 
         # run circuit on backend
-        #job_manager = IBMQJobManager()
-        #job_set = job_manager.run(circuits, backend=self.devices[0], name='msrincom_test')
-        #job_set.error_messages()
         job_set = execute(circuits, backend=self.devices[0], shots=shot)
 
         # retrieve and return counts
@@ -113,6 +115,13 @@ class LocalCommunicator(QuantumCommunicator):
                 counts.append({"NO MEASUREMENT":0})
         return counts
 
+    # @brief    Method for running all combinations of pre and post operations
+    #           Runs all permutations of input operations, and output operations (permutes over all columns)
+    # @params   input_registers: registers to transmit states from
+    #           output_registers: registers to transmit states to
+    #           pre_operations: array of all different operations to run before transmission
+    #           post_operations: multidimensional array of all operations to run after transmission
+    # @return   Counts from running on all devices
     def batch_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
         pre_ops = []
         post_ops = [[],[]]
