@@ -15,15 +15,15 @@ class QuantumCommunicator(ABC):
     #               transmitting resulting states
     # @params   input_registers: registers to transmit states from
     #           output_registers: registers to transmit states to
-    #           pre_operations: operations to run before transmision
-    #           post_operations: tuple of operations to run after transmission
+    #           pre_operation: operation to run before transmision
+    #           post_operations: list of operations to run after transmission
     #           shot: number of shots to run
     # @Returns  Counts from running on all devices
-    # @note     pre_operations is expected to be a single circuit
-    #               for Alice's device. post_operations is a tuple
-    #               of form (alice's circuit, bob's circuit)
+    # @note     pre_operation is expected to be a single circuit on
+    #               devices[0]. post_operations is a list of circuits on
+    #               corresponding devices[i]
     @abstractmethod
-    def run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
+    def run_and_transmit(self,input_registers,output_registers,pre_operation,post_operations,shot):
         pass
 
     # @brief    Abstract method of running batches of operations and
@@ -31,17 +31,17 @@ class QuantumCommunicator(ABC):
     # @params   input_registers: registers to transmit states from
     #           output_registers: registers to transmit states to
     #           pre_operations: array of operations to run before transmision
-    #           post_operations: array of tuples of operations to run after transmission
+    #           post_operations: multidimensional array of operations to run after transmission
+    #                            each column is an pair of operations to run
+    #                            each element in the array is a list of operations for a single device
     # @Returns  Counts from running on all devices
-    # @note     pre_operations is expected to be a single circuit
-    #               for Alice's device. post_operations is a tuple
-    #               of form (alice's circuit, bob's circuit)
     #           Shots are fixed at 1000 per circuit
     @abstractmethod
-    def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations):
+    def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
         pass
 
     # @brief    Abstract method of running all combinations of pre and post operations
+    #           Runs all permutations of input operations, and output operations (permutes over all columns)
     # @params   input_registers: registers to transmit states from
     #           output_registers: registers to transmit states to
     #           pre_operations: array of all different operations to run before transmission
@@ -49,7 +49,7 @@ class QuantumCommunicator(ABC):
     # @return   Counts from running on all devices
     # @note     Shots are fixed at 1000 per circuit
     @abstractmethod
-    def batch_run_and_transmit(self,input_register,output_registers,pre_operations,post_operations):
+    def batch_run_and_transmit(self,input_register,output_registers,pre_operations,post_operations,shot):
         pass
 
     # Mutator for array of devices
@@ -60,12 +60,21 @@ class QuantumCommunicator(ABC):
 class LocalCommunicator(QuantumCommunicator):
     # Concrete derived class from QuantumCommunicator
     # Runs circuits on a single computer
+    # Note that input_registers and output_registers are not used
 
     def __init__(self,backend):
         self.devices = backend
 
-    def run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
-        # simply compose a single circuit from the input operations
+    # @brief    Concatenates inputs to run a single circuit on a single computer
+    # @params   input_registers: registers to transmit states from
+    #           output_registers: registers to transmit states to
+    #           pre_operation: operation to run before transmision
+    #           post_operations: list of operations to run after transmission
+    #           shot: number of shots to run
+    # @returns  counts from running circuits or "NO MEASUREMENT" dictionary if
+    #               there are no counts
+    def run_and_transmit(self,input_registers,output_registers,pre_operation,post_operations,shot):
+        # compose a single circuit from the input operations
         size = max(post_operations[0].num_qubits,post_operations[1].num_qubits)
         qc = QuantumCircuit(size)
         qc += pre_operations
@@ -73,23 +82,47 @@ class LocalCommunicator(QuantumCommunicator):
 
         # run circuit on backend
         job = execute(qc, backend=self.devices[0], shots=shot)
+
+        if job.result().data(qc) == {}:
+            return {"NO_MEASUREMENT": 0}
+
         return job.result().get_counts(qc)
 
-    def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations):
-        # simply compose circuits from the input operations
+    def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
+        # compose circuits from the input operations
         circuits = []
         for i in range (0,len(pre_operations)):
-            qc = QuantumCircuit(max(post_operations[i][0].num_qubits(),
-                post_operations[i][1].num_qubits()))
+            qc = QuantumCircuit(max(post_operations[0][i].num_qubits,
+                post_operations[1][i].num_qubits))
             qc += pre_operations[i]
-            qc += post_operations[i][0] + post_operations[i][1]
+            qc += post_operations[0][i] + post_operations[1][i]
             circuits.append(qc)
 
         # run circuit on backend
-        job_manager = IBMQJobManager()
-        job_set = job_manager.run(qc, backend=self.devices[0], name='msrincom_test')
-        job_set.error_messages()
+        #job_manager = IBMQJobManager()
+        #job_set = job_manager.run(circuits, backend=self.devices[0], name='msrincom_test')
+        #job_set.error_messages()
+        job_set = execute(circuits, backend=self.devices[0], shots=shot)
 
         # retrieve and return counts
-        counts = job_set.results().get_counts(0:len(pre_operations))
+        counts = []
+        for i in range (0,len(circuits)):
+            if job_set.result().data(circuits[i]) != {}:
+                counts.append(job_set.result().get_counts(circuits[i]))
+            else:
+                counts.append({"NO MEASUREMENT":0})
         return counts
+
+    def batch_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
+        pre_ops = []
+        post_ops = [[],[]]
+
+        # iterate over all combinations of operations
+        for pre_operation in pre_operations:
+            for post_op1 in post_operations[0]: # first list in post_operations array
+                for post_op2 in post_operations[1]: # second list in post_operaitons array
+                    pre_ops.append(pre_operation)
+                    post_ops[0].append(post_op1)
+                    post_ops[1].append(post_op2)
+
+        return self.multi_run_and_transmit(input_registers,output_registers,pre_ops,post_ops,shot)
