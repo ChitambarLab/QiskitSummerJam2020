@@ -1,6 +1,29 @@
 import numpy as np
 from qiskit import QuantumCircuit
-from qiskit.providers.ibmq.managed import IBMQJobManager
+
+# @brief    Runs the incompatible measurements test
+# @detail   Creates and runs all cases x={0,1,2,3} and y={0,1}
+#               then determines if the bell inequality has been violated
+# @params   dispatcher: quantum dispatcher to run operations
+#           tolerance: tolerance on how close to classical results
+#               the violation can get
+#           shots: number of shots to run
+# @returns  Pass/Fail and the bell violation value
+def run_test(dispatcher, tolerance, shots):
+
+    pre_ops = [bb84_states()]
+    post_ops = [[QuantumCircuit(4)],
+                [measure_circuit(0),measure_circuit(1)]]
+
+    # send to dispatcher to run
+    counts = dispatcher.batch_run_and_transmit(
+                pre_ops,post_ops,shots)
+
+    # parse and calculate bell violation
+    violation = bell_violation(counts[0],counts[1],shots,shots)
+    expectation_value = 6.82842712475
+
+    return (abs(violation-expectation_value) <= tolerance,violation)
 
 # @brief   Create's Alice's half of the incompatibility
 #           measurement circuit.
@@ -29,17 +52,6 @@ def measure_circuit(y):
     qc.measure_all()
     return qc
 
-# @brief    Runs multiple jobs
-# @params   qc: an arry of circuits to run
-#           bckend: the backend to run the circuits on
-# @returns  A managed_job object containing jobs for all circuits
-# @note     cannot control the number of shots, is always 1000
-def run_jobs(qc,bckend):
-    job_manager = IBMQJobManager()
-    job_set = job_manager.run(qc, backend=bckend, name='msrincom_test')
-    job_set.error_messages()
-    return job_set
-
 # Computes the amount of violation of the measurement incompatibility bell inequality
 #
 #	6 >= p(0|00) + p(1|10) + p(0|20) + p(1|30) + p(1|01) + p(0|11) + p(0|21) + p(1|31)
@@ -53,12 +65,11 @@ def run_jobs(qc,bckend):
 # Output:
 #	violation: Float, if positive, probabilities violate, if negative, no violation is present
 def bell_violation(y0_counts, y1_counts, y0_shots, y1_shots):
-	classical_bound = 6
 
 	y0_probs = conditional_probs(y0_counts, y0_shots)
 	y1_probs = conditional_probs(y1_counts, y1_shots)
 
-	violation = bell_score(y0_probs, y1_probs) - classical_bound
+	violation = bell_score(y0_probs, y1_probs)
 
 	return violation
 
