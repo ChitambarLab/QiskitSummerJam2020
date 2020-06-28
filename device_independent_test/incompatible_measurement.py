@@ -16,13 +16,14 @@ def run_test(dispatcher, tolerance, shots):
                 [measure_circuit(0),measure_circuit(1)]]
 
     # send to dispatcher to run
-    counts = dispatcher.batch_run_and_transmit([0,1,2,3],[0,1,2,3],
+    counts = dispatcher.batch_run_and_transmit(
                 pre_ops,post_ops,shots)
 
     # parse and calculate bell violation
     violation = bell_violation(counts[0],counts[1],shots,shots)
+    expectation_value = 6.82842712475
 
-    return (violation - tolerance > 0,violation)
+    return (abs(violation-expectation_value) <= tolerance,violation)
 
 # @brief   Create's Alice's half of the incompatibility
 #           measurement circuit.
@@ -64,12 +65,11 @@ def measure_circuit(y):
 # Output:
 #	violation: Float, if positive, probabilities violate, if negative, no violation is present
 def bell_violation(y0_counts, y1_counts, y0_shots, y1_shots):
-	classical_bound = 6
 
 	y0_probs = conditional_probs(y0_counts, y0_shots)
 	y1_probs = conditional_probs(y1_counts, y1_shots)
 
-	violation = bell_score(y0_probs, y1_probs) - classical_bound
+	violation = bell_score(y0_probs, y1_probs)
 
 	return violation
 

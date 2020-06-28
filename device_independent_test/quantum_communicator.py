@@ -4,12 +4,12 @@ from qiskit import QuantumCircuit, execute
 class QuantumDispatcher(ABC):
     # Abstract base class to define the functionality of a
     # ficitonal device which communicates states between quantum computers
+    # Note that a future edit of this code may need to be able to specify which
+    #       registers to transmit states between
 
     # @brief    Abstract method of running operations and
     #               transmitting resulting states
-    # @params   input_registers: registers to transmit states from
-    #           output_registers: registers to transmit states to
-    #           pre_operation: operation to run before transmision
+    # @params   pre_operation: operation to run before transmision
     #           post_operations: list of operations to run after transmission
     #           shot: number of shots to run
     # @Returns  Counts from running on all devices
@@ -17,31 +17,27 @@ class QuantumDispatcher(ABC):
     #               devices[0]. post_operations is a list of circuits on
     #               corresponding devices[i]
     @abstractmethod
-    def run_and_transmit(self,input_registers,output_registers,pre_operation,post_operations,shot):
+    def run_and_transmit(self,pre_operation,post_operations,shot):
         pass
 
     # @brief    Abstract method of running batches of operations and
     #               transmitting resulting states
-    # @params   input_registers: registers to transmit states from
-    #           output_registers: registers to transmit states to
-    #           pre_operations: array of operations to run before transmision
+    # @params   pre_operations: array of operations to run before transmision
     #           post_operations: multidimensional array of operations to run after transmission
     #                            each column is an pair of operations to run
     #                            each element in the array is a list of operations for a single device
     # @Returns  Counts from running on all devices
     @abstractmethod
-    def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
+    def multi_run_and_transmit(self,pre_operations,post_operations,shot):
         pass
 
     # @brief    Abstract method of running all combinations of pre and post operations
     #           Runs all permutations of input operations, and output operations (permutes over all columns)
-    # @params   input_registers: registers to transmit states from
-    #           output_registers: registers to transmit states to
-    #           pre_operations: array of all different operations to run before transmission
+    # @params   pre_operations: array of all different operations to run before transmission
     #           post_operations: multidimensional array of all operations to run after transmission
     # @return   Counts from running on all devices
     @abstractmethod
-    def batch_run_and_transmit(self,input_register,output_registers,pre_operations,post_operations,shot):
+    def batch_run_and_transmit(self,pre_operations,post_operations,shot):
         pass
 
 class LocalDispatcher(QuantumDispatcher):
@@ -53,14 +49,12 @@ class LocalDispatcher(QuantumDispatcher):
         self.devices = backend
 
     # @brief    Concatenates inputs to run a single circuit on a single computer
-    # @params   input_registers: registers to transmit states from
-    #           output_registers: registers to transmit states to
-    #           pre_operation: operation to run before transmision
+    # @params   pre_operation: operation to run before transmision
     #           post_operations: list of operations to run after transmission
     #           shot: number of shots to run
     # @returns  counts from running circuits or "NO MEASUREMENT" dictionary if
     #               there are no counts
-    def run_and_transmit(self,input_registers,output_registers,pre_operation,post_operations,shot):
+    def run_and_transmit(self,pre_operation,post_operations,shot):
         # compose a single circuit from the input operations
         size = max(post_operations[0].num_qubits,post_operations[1].num_qubits)
         qc = QuantumCircuit(size)
@@ -76,14 +70,12 @@ class LocalDispatcher(QuantumDispatcher):
         return job.result().get_counts(qc)
 
     # @brief    Method for running multiple circuits
-    # @params   input_registers: registers to transmit states from
-    #           output_registers: registers to transmit states to
-    #           pre_operations: array of operations to run before transmision
+    # @params   pre_operations: array of operations to run before transmision
     #           post_operations: multidimensional array of operations to run after transmission
     #                            each column is an pair of operations to run
     #                            each element in the array is a list of operations for a single device
     # @Returns  Counts from running on all devices
-    def multi_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
+    def multi_run_and_transmit(self,pre_operations,post_operations,shot):
         # compose circuits from the input operations
         circuits = []
         for i in range (0,len(pre_operations)):
@@ -107,12 +99,10 @@ class LocalDispatcher(QuantumDispatcher):
 
     # @brief    Method for running all combinations of pre and post operations
     #           Runs all permutations of input operations, and output operations (permutes over all columns)
-    # @params   input_registers: registers to transmit states from
-    #           output_registers: registers to transmit states to
-    #           pre_operations: array of all different operations to run before transmission
+    # @params   pre_operations: array of all different operations to run before transmission
     #           post_operations: multidimensional array of all operations to run after transmission
     # @return   Counts from running on all devices
-    def batch_run_and_transmit(self,input_registers,output_registers,pre_operations,post_operations,shot):
+    def batch_run_and_transmit(self,pre_operations,post_operations,shot):
         pre_ops = []
         post_ops = [[],[]]
 
@@ -124,4 +114,4 @@ class LocalDispatcher(QuantumDispatcher):
                     post_ops[0].append(post_op1)
                     post_ops[1].append(post_op2)
 
-        return self.multi_run_and_transmit(input_registers,output_registers,pre_ops,post_ops,shot)
+        return self.multi_run_and_transmit(pre_ops,post_ops,shot)
