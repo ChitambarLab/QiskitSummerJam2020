@@ -54,7 +54,7 @@ class LocalDispatcher(QuantumDispatcher):
     #           shot: number of shots to run
     # @returns  counts from running circuits or "NO MEASUREMENT" dictionary if
     #               there are no counts
-    def run_and_transmit(self,pre_operation,post_operations,shot):
+    def run_and_transmit(self, pre_operations, post_operations, shots):
         # compose a single circuit from the input operations
         size = max(post_operations[0].num_qubits,post_operations[1].num_qubits)
         qc = QuantumCircuit(size)
@@ -62,7 +62,7 @@ class LocalDispatcher(QuantumDispatcher):
         qc += post_operations[0] + post_operations[1]
 
         # run circuit on backend
-        job = execute(qc, backend=self.devices[0], shots=shot)
+        job = execute(qc, backend=self.devices[0], shots=shots)
 
         if job.result().data(qc) == {}:
             return {"NO_MEASUREMENT": 0}
@@ -75,7 +75,7 @@ class LocalDispatcher(QuantumDispatcher):
     #                            each column is an pair of operations to run
     #                            each element in the array is a list of operations for a single device
     # @Returns  Counts from running on all devices
-    def multi_run_and_transmit(self,pre_operations,post_operations,shot):
+    def multi_run_and_transmit(self, pre_operations, post_operations, shots):
         # compose circuits from the input operations
         circuits = []
         for i in range (0,len(pre_operations)):
@@ -86,7 +86,7 @@ class LocalDispatcher(QuantumDispatcher):
             circuits.append(qc)
 
         # run circuit on backend
-        job_set = execute(circuits, backend=self.devices[0], shots=shot)
+        job_set = execute(circuits, backend=self.devices[0], shots=shots)
 
         # retrieve and return counts
         counts = []
@@ -102,7 +102,7 @@ class LocalDispatcher(QuantumDispatcher):
     # @params   pre_operations: array of all different operations to run before transmission
     #           post_operations: multidimensional array of all operations to run after transmission
     # @return   Counts from running on all devices
-    def batch_run_and_transmit(self,pre_operations,post_operations,shot):
+    def batch_run_and_transmit(self, pre_operations, post_operations, shots):
         pre_ops = []
         post_ops = [[],[]]
 
@@ -114,4 +114,4 @@ class LocalDispatcher(QuantumDispatcher):
                     post_ops[0].append(post_op1)
                     post_ops[1].append(post_op2)
 
-        return self.multi_run_and_transmit(pre_ops,post_ops,shot)
+        return self.multi_run_and_transmit(pre_ops,post_ops,shots)
