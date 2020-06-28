@@ -5,11 +5,6 @@ class QuantumDispatcher(ABC):
     # Abstract base class to define the functionality of a
     # ficitonal device which communicates states between quantum computers
 
-    # @brief    Constructor taking in two backends
-    # @params   backends: array of devices to run on
-    def __init__(self, backends):
-        self.devices = backends
-
     # @brief    Abstract method of running operations and
     #               transmitting resulting states
     # @params   input_registers: registers to transmit states from
@@ -48,11 +43,6 @@ class QuantumDispatcher(ABC):
     @abstractmethod
     def batch_run_and_transmit(self,input_register,output_registers,pre_operations,post_operations,shot):
         pass
-
-    # Mutator for array of devices
-    def set_devices(self,new_backends):
-        self.devices = new_backends
-
 
 class LocalDispatcher(QuantumDispatcher):
     # Concrete derived class from QuantumCommunicator
