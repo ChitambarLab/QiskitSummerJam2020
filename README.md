@@ -34,5 +34,18 @@ With Makefile: `make test`
 
 or with python: `python3 -m unittest tests/*.py`
 
+## Build Docs
+
+The documentation is built using `nbconvert` and `mkdocs` to make a static site generated from the jupyter notebooks in this project.
+
+Load a conda environment for site building: `make build.env`
+
+Convert Jupyter notebooks to markdown: `make build.site`
+
+Host project docs locally: `mkdocs serve`
+
+Deploy the docs to github-pages (only run from master): `mkdocs gh-deploy` 
+
+
 
 
