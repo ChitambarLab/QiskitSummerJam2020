@@ -44,7 +44,11 @@ Convert Jupyter notebooks to markdown: `make build.site`
 
 Host project docs locally: `mkdocs serve`
 
+Cleanup the docs folder before builds with: `make clean.site`
+
 Deploy the docs to github-pages (only run from master): `mkdocs gh-deploy` 
+
+
 
 
 

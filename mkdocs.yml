@@ -7,8 +7,12 @@ theme:
 use_directory_urls: false
 nav:
   - Home: index.md
+  - Theory:
+      - Device-Independent Tests: theory_device_independent_tests.md
+      - Verifying Dimension: theory_dimension_tests.md
+      - Verifying Measurements: Theory_for_Incompatible_Measurement_Test.md
+      - Verifying Entanglement: CHSH_theory.md
   - Entanglement: Entanglement.md
-  - Theory for Measurement Incompatibility Test: Theory_for_Incompatible_Measurement_Test.md
 markdown_extensions:
   - admonition
   - pymdownx.arithmatex
