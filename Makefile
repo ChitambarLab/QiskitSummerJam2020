@@ -16,7 +16,7 @@ build.env: ; conda env create -f environment.yml
 build.site: $(md_pages) ; mkdir docs/img ; cp -r notebook/img/* docs/img ;
 
 clean.env: ; conda remove --name $(conda_env) --all
-clean.site: ; rm $(md_pages) ; rm -r docs/*/* ;
+clean.site: ; rm $(md_pages) ; rm -r docs/* ;
 
 print-%: ; @echo $* is $($*):
 
