@@ -39,7 +39,7 @@ def run_test(dispatcher, tolerance, shots):
                 + counts[4]["0"] + counts[5]["0"] + counts[6]["1"] + counts[7]["1"])/(shots)
     expectation_value = 6.82842712475
 
-    return (abs(violation-expectation_value) <= tolerance,violation)
+    return (abs(violation - expectation_value) <= tolerance, violation)
 
 
 # @brief    Runs all incompatible measurements test on 4 qubits

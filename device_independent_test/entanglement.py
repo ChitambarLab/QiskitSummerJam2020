@@ -1,5 +1,5 @@
 import numpy as np
-from qiskit import IBMQ, QuantumCircuit, execute
+from qiskit import QuantumCircuit
 
 # @brief    Circuit creating the + bell state
 # @returns  Two qubit circuit resulting in the + bell state
