@@ -3,11 +3,11 @@ import unittest
 import numpy as np
 from qiskit.quantum_info import Statevector
 
-from device_independent_test import entanglement
+from device_independent_test.entanglement import Entanglement
 
 class module_test_cases(unittest.TestCase):
-	def test_EntanglmentTest(self):
-		test = entanglement.EntanglementTest()
+	def test_Entanglment(self):
+		test = Entanglement()
 		qc = test.create_bell_state()
 
 		test_state = Statevector.from_instruction(qc)
