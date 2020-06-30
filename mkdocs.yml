@@ -1,4 +1,4 @@
-site_name: Static Website
+site_name: Qiskit Summer Jam 2020
 theme:
   name: "material"
   palette:
@@ -7,8 +7,20 @@ theme:
 use_directory_urls: false
 nav:
   - Home: index.md
-  - Entanglement: Entanglement.md
-  - Theory for Measurement Incompatibility Test: Theory_for_Incompatible_Measurement_Test.md
+  - Verification Protocol: device_independent_handshake_protocol.md
+  - Qiskit Examples:
+      - Classical Dimension Test: Classical_Dimension_Test.md 
+      - Incompatible Measurement Test: Incompatible_Measurement.md
+      - Entanglement Test: Entanglement.md
+      - Validating Test Failures: when_tests_fail.md
+  - Device-Independence Theory:
+      - Device-Independent Tests: theory_device_independent_tests.md
+      - Verifying Dimension: theory_dimension_tests.md
+      - Verifying Measurements: Theory_for_Incompatible_Measurement_Test.md
+      - Verifying Entanglement: CHSH_theory.md
+  - Software Documentation:
+      - device_independent_test Module: Device_Independent_Test_Documentation.md
+      - Dispatcher Example: Quantum_Communicator_Example.md
 markdown_extensions:
   - admonition
   - pymdownx.arithmatex
