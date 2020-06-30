@@ -1,7 +1,7 @@
 import numpy as np
 from qiskit import QuantumCircuit
 
-# @brief    Runs the incompatible measurements test
+# @brief    Runs all incompatible measurements tests (seperate circuits)
 # @detail   Creates and runs all cases x={0,1,2,3} and y={0,1}
 #               then determines if the bell inequality has been violated
 # @params   dispatcher: quantum dispatcher to run operations
@@ -9,11 +9,63 @@ from qiskit import QuantumCircuit
 #               the violation can get
 #           shots: number of shots to run
 # @returns  Pass/Fail and the bell violation value
+# @note     measure_all() cannot be used in the circuit construction
+#               as it would add another classical register
 def run_test(dispatcher, tolerance, shots):
+    # create bb84 states
+    a2 = QuantumCircuit(1)
+    a2.x(0)
+    a3 = QuantumCircuit(1)
+    a3.h(0)
+    a4 = QuantumCircuit(1)
+    a4.x(0)
+    a4.h(0)
+    pre_ops = [QuantumCircuit(1), a2, a3, a4]
+
+    b0 = QuantumCircuit(1,1) # bob measuring when y=0
+    b0.append(measure_circuit(0),[0])
+    b0.measure(0,0)
+
+    b1 = QuantumCircuit(1,1) # bob measuring when y=1
+    b1.append(measure_circuit(1),[0])
+    b1.measure(0,0)
+
+    post_ops = [[QuantumCircuit(1,1)],[b0,b1]]
+
+    counts = dispatcher.batch_run_and_transmit(pre_ops,post_ops,shots)
+
+    #	6 >= p(0|00) + p(1|01) + p(1|10) + p(0|11) + p(0|20) + p(0|21) + p(1|30) + p(1|31)
+    violation = (counts[0]["0"] + counts[1]["1"] + counts[2]["1"] + counts[3]["0"]
+                + counts[4]["0"] + counts[5]["0"] + counts[6]["1"] + counts[7]["1"])/(shots)
+    expectation_value = 6.82842712475
+
+    return (abs(violation-expectation_value) <= tolerance,violation)
+
+
+# @brief    Runs all incompatible measurements test on 4 qubits
+# @detail   Creates and runs all cases x={0,1,2,3} and y={0,1}
+#               then determines if the bell inequality has been violated
+# @params   dispatcher: quantum dispatcher to run operations
+#           tolerance: tolerance on how close to classical results
+#               the violation can get
+#           shots: number of shots to run
+# @returns  Pass/Fail and the bell violation value
+#  @note    measure_all() cannot be used in the circuit construction
+#               as it would add classical registers
+def run_test_parallel(dispatcher, tolerance, shots):
+    measure_0 = QuantumCircuit(4,4)
+    for i in range(0,4):
+        measure_0.append(measure_circuit(0),[i])
+        measure_0.measure(i,i)
+
+    measure_1 = QuantumCircuit(4,4)
+    for i in range(0,4):
+        measure_1.append(measure_circuit(1),[i])
+        measure_1.measure(i,i)
 
     pre_ops = [bb84_states()]
-    post_ops = [[QuantumCircuit(4)],
-                [measure_circuit(0),measure_circuit(1)]]
+    post_ops = [[QuantumCircuit(4,4)],
+                [measure_0,measure_1]]
 
     # send to dispatcher to run
     counts = dispatcher.batch_run_and_transmit(
@@ -40,16 +92,14 @@ def bb84_states():
 
 # @brief   Create's Bob's half of the incompatibility
 #           measurement circuit.
-# @detail  Returns a 4 qubit circuit which applies a y rotation
-#           to each register
+# @detail  Returns a 1 qubit circuit which applies a y rotation
 # @params  y: 0 or 1. Bob's parameter. -pi/4 or -3pi/4 rotation
-# @returns 4 qubit QuantumCircuit
+# @returns 1 qubit QuantumCircuit
 def measure_circuit(y):
-    assert y == 0 or y == 1, "Bob's input should be 0 or 1"
-    qc = QuantumCircuit(4)
+    assert y == 0 or y == 1
+    qc = QuantumCircuit(1)
     theta = -1.0*(np.pi/4 + 0.5*y*np.pi)
-    qc.u3(theta,0,0,range(0,4))
-    qc.measure_all()
+    qc.u3(theta,0,0,0)
     return qc
 
 # Computes the amount of violation of the measurement incompatibility bell inequality
