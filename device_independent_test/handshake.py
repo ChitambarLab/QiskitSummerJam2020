@@ -19,10 +19,13 @@ class HandShake():
         else:
             print("Failed Dimensionality with value: ", value)
         return (passed, value)
-        
+
     # Run measurement incompatibility test
-    def measurement_incompatibility(self, tolerance, shots):
-        (passed, value) = incompatible_measurement.run_test(self.dispatcher, tolerance, shots)
+    def measurement_incompatibility(self, tolerance, shots, parallel=1):
+        if parallel:
+            (passed,value) = incompatible_measurement.run_test_parallel(self.dispatcher, tolerance, shots)
+        else:
+            (passed,value) = incompatible_measurement.run_test(self.dispatcher, tolerance, shots)
         if passed:
             print("Passed Measurment Incompatibility with value: ", value)
         else:
@@ -30,8 +33,11 @@ class HandShake():
         return (passed, value)
 
     # Run entanglement test
-    def entanglement(self, tolerance, shots):
-        (passed, value) = entanglement.run_test(self.dispatcher, tolerance, shots)
+    def entanglement(self, tolerance, shots, parallel=1):
+        if parallel:
+            (passed, value) = entanglement.run_test_parallel(self.dispatcher, tolerance, shots)
+        else:
+            (passed, value) = entanglement.run_test(self.dispatcher, tolerance, shots)
         if passed:
             print("Passed Entanglement with value: ", value)
         else:

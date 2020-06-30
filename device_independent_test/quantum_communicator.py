@@ -84,6 +84,7 @@ class LocalDispatcher(QuantumDispatcher):
             qc += pre_operations[i]
             qc += post_operations[0][i] + post_operations[1][i]
             circuits.append(qc)
+            display(qc.draw())
 
         # run circuit on backend
         job_set = execute(circuits, backend=self.devices[0], shots=shots)
