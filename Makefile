@@ -24,8 +24,3 @@ docs/%.md: notebook/%.ipynb
 	jupyter nbconvert\
 		--to markdown $<\
 		--output-dir $(dir $@)\
-
-
-
-
-# 		--template=src/to_markdown.tpl
