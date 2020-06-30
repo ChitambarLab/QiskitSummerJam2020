@@ -39,10 +39,21 @@ class HandShake():
         return (passed, value)
 
     # Run all tests to verify functioning computer/connection
-    def test_all(self, tolerance, shots):
-        dimensionality = self.dimensionality(tolerance, shots)
-        measurement_incompatiblility = self.measurement_incompatibility(tolerance, shots)
-        entanglement = self.entanglement(tolerance, shots)
+    # params should look like:
+    # { "dimensionality": { "tolerance": 0.1, "shots": 1000 } }
+    def test_all(self, params):
+        dimensionality = self.dimensionality(
+            params["dimensionality"]["tolerance"],
+            params["dimensionality"]["shots"]
+        )
+        measurement_incompatiblility = self.measurement_incompatibility(
+            params["measurement_incompatibility"]["tolerance"],
+            params["measurement_incompatibility"]["shots"]
+        )
+        entanglement = self.entanglement(
+            params["entanglement"]["tolerance"],
+            params["entanglement"]["shots"]
+        )
 
         if dimensionality[0] & measurement_incompatiblility[0] & entanglement[0]:
             return True
