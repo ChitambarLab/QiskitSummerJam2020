@@ -4,11 +4,6 @@ from qiskit import QuantumCircuit
 # @brief    Circuit creating the + bell state
 # @returns  Two qubit circuit resulting in the + bell state
 def create_bell_state():
-    """Creates two qubit bell state
-
-    Returns:
-    QuantumCircuit: created circuit
-    """
     circuit = QuantumCircuit(2)
     circuit.h(0)
     circuit.cx(0,1)
@@ -28,7 +23,7 @@ def compute_expectation_for_CHSH(counts, shots):
 # @returns  Tuple of (pass/fail, test value)
 # @note     measure_all() cannot be used in the construction of the circuits below
 #               as it will add another classical register
-def run_test(dispatcher,tolerance=0.4,shots=1000):
+def run_test(dispatcher, tolerance=0.4, shots=1000):
     pre_ops = [create_bell_state()]
 
     # Alice's measurements (Z or X basis)
@@ -46,7 +41,7 @@ def run_test(dispatcher,tolerance=0.4,shots=1000):
     post_ops = [[alice_z,alice_x],[bob_w,bob_v]]
 
     # run all permutations through the dispatcher
-    counts = dispatcher.batch_run_and_transmit(pre_ops,post_ops,shots)
+    counts = dispatcher.batch_run_and_transmit(pre_ops, post_ops, shots)
     expected_ZW = compute_expectation_for_CHSH(counts[0], shots)
     expected_ZV = compute_expectation_for_CHSH(counts[1], shots)
     expected_XW = compute_expectation_for_CHSH(counts[2], shots)
@@ -105,7 +100,7 @@ def run_test_parallel(dispatcher,tolerance=0.4,shots=1000):
 # @returns  The expectation value of the CHSH test
 # @note     The inputted keys in counts have to be reversed as the last
 #               character corresponds to the first qubit
-def parse_parallel_data(counts):
+def parse_parallel_data(counts, shots):
 
     counts_zw = {"00":0,"01":0,"10":0,"11":0}
     counts_zv = {"00":0,"01":0,"10":0,"11":0}
