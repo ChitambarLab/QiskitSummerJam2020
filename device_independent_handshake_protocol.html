@@ -1,0 +1,953 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.3.3">
+    
+    
+      
+        <title>Verification Protocol - Qiskit Summer Jam 2020</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#device-independent-handshake-protocol-for-verifying-quantum-systems" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="." title="Qiskit Summer Jam 2020" class="md-header-nav__button md-logo" aria-label="Qiskit Summer Jam 2020">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Qiskit Summer Jam 2020
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Verification Protocol
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Qiskit Summer Jam 2020" class="md-nav__button md-logo" aria-label="Qiskit Summer Jam 2020">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Qiskit Summer Jam 2020
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="index.html" title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Verification Protocol
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="device_independent_handshake_protocol.html" title="Verification Protocol" class="md-nav__link md-nav__link--active">
+      Verification Protocol
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setting" class="md-nav__link">
+    Setting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-verification-handshake-protocol" class="md-nav__link">
+    Device Verification Handshake Protocol
+  </a>
+  
+    <nav class="md-nav" aria-label="Device Verification Handshake Protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    Assumptions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devices" class="md-nav__link">
+    Devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifiers" class="md-nav__link">
+    Verifiers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    Tests
+  </a>
+  
+    <nav class="md-nav" aria-label="Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dimensionality" class="md-nav__link">
+    Dimensionality
+  </a>
+  
+    <nav class="md-nav" aria-label="Dimensionality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classical-dimension" class="md-nav__link">
+    Classical Dimension
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superposition-measurement-incompatibility" class="md-nav__link">
+    Superposition &amp; Measurement Incompatibility
+  </a>
+  
+    <nav class="md-nav" aria-label="Superposition &amp; Measurement Incompatibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-qubit-bell-violation" class="md-nav__link">
+    Single-Qubit Bell Violation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entanglement" class="md-nav__link">
+    Entanglement
+  </a>
+  
+    <nav class="md-nav" aria-label="Entanglement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chsh-bell-violation" class="md-nav__link">
+    CHSH Bell Violation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-the-ibm-quantum-computer" class="md-nav__link">
+    Verifying the IBM Quantum Computer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    Security
+  </a>
+  
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#potential-exploits" class="md-nav__link">
+    Potential Exploits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classical-network-security" class="md-nav__link">
+    Classical Network Security
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Qiskit Examples
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Qiskit Examples" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Qiskit Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Classical_Dimension_Test.html" title="Classical Dimension Test" class="md-nav__link">
+      Classical Dimension Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Incompatible_Measurement.html" title="Incompatible Measurement Test" class="md-nav__link">
+      Incompatible Measurement Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Entanglement.html" title="Entanglement Test" class="md-nav__link">
+      Entanglement Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="when_tests_fail.html" title="Validating Test Failures" class="md-nav__link">
+      Validating Test Failures
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Device-Independence Theory
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Device-Independence Theory" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Device-Independence Theory
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="theory_device_independent_tests.html" title="Device-Independent Tests" class="md-nav__link">
+      Device-Independent Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="theory_dimension_tests.md" title="Verifying Dimension" class="md-nav__link">
+      Verifying Dimension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Theory_for_Incompatible_Measurement_Test.html" title="Verifying Measurements" class="md-nav__link">
+      Verifying Measurements
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="CHSH_theory.html" title="Verifying Entanglement" class="md-nav__link">
+      Verifying Entanglement
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Software Documentation
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Software Documentation" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Software Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Device_Independent_Test_Documentation.html" title="device_independent_test Module" class="md-nav__link">
+      device_independent_test Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Quantum_Communicator_Example.html" title="Dispatcher Example" class="md-nav__link">
+      Dispatcher Example
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setting" class="md-nav__link">
+    Setting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-verification-handshake-protocol" class="md-nav__link">
+    Device Verification Handshake Protocol
+  </a>
+  
+    <nav class="md-nav" aria-label="Device Verification Handshake Protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    Assumptions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devices" class="md-nav__link">
+    Devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifiers" class="md-nav__link">
+    Verifiers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    Tests
+  </a>
+  
+    <nav class="md-nav" aria-label="Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dimensionality" class="md-nav__link">
+    Dimensionality
+  </a>
+  
+    <nav class="md-nav" aria-label="Dimensionality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classical-dimension" class="md-nav__link">
+    Classical Dimension
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superposition-measurement-incompatibility" class="md-nav__link">
+    Superposition &amp; Measurement Incompatibility
+  </a>
+  
+    <nav class="md-nav" aria-label="Superposition &amp; Measurement Incompatibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-qubit-bell-violation" class="md-nav__link">
+    Single-Qubit Bell Violation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entanglement" class="md-nav__link">
+    Entanglement
+  </a>
+  
+    <nav class="md-nav" aria-label="Entanglement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chsh-bell-violation" class="md-nav__link">
+    CHSH Bell Violation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-the-ibm-quantum-computer" class="md-nav__link">
+    Verifying the IBM Quantum Computer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    Security
+  </a>
+  
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#potential-exploits" class="md-nav__link">
+    Potential Exploits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classical-network-security" class="md-nav__link">
+    Classical Network Security
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="device-independent-handshake-protocol-for-verifying-quantum-systems">Device-Independent Handshake Protocol for Verifying Quantum Systems<a class="headerlink" href="#device-independent-handshake-protocol-for-verifying-quantum-systems" title="Permanent link">&para;</a></h1>
+<p><em>Test the quantum capabilities of unknown devices.</em></p>
+<p>This handshake protocol outlines a suite of tests to verify various quantum properties. The handshake is implemented by a verifier that wishes to verify an unknown device using a trusted device that is quantum enabled.</p>
+<p>If successful, our device-independent tests verify a minimal set of quantum technologies required for common quantum network protocols such as the BB84 quantum key distribution protocol or quantum teleportation. Our test suite is able to verify:</p>
+<ul>
+<li>Dimension of a quantum channel.</li>
+<li>Qubit superposition preparation.</li>
+<li>Qubit incompatible measurments.</li>
+<li>Bipartite entanglement.</li>
+</ul>
+<p>A successful handshake means that each quantum device can perform its advertised quantum properties and may be used to implement more sophisticated protocols such as quantum key distribution or teleportation.</p>
+<h2 id="setting">Setting<a class="headerlink" href="#setting" title="Permanent link">&para;</a></h2>
+<p>We conisder a bipartite communication scenario involving two connected nodes in a quantum network. Each node has pre-established trust with a Verfier capable of performing a <a href="https://chitambarlab.github.io/QiskitSummerJam2020/theory_device_independent_tests.html#partial-device-independent-tests">partial device-independent test</a>. For convenience the test devices will be given labels Alice and Bob and their respective Verifiers will be labeled with "A" and "B" respectively.</p>
+<h2 id="device-verification-handshake-protocol">Device Verification Handshake Protocol<a class="headerlink" href="#device-verification-handshake-protocol" title="Permanent link">&para;</a></h2>
+<p><img src="img/handshake_protocol.png" alt="Drawing" style="width: 800px;"/></p>
+<p>Verifier A trusts device Alice and Verifier B trusts device Bob. Verifier A first uses its trust of Alice's quantum capabilities to certify Bob's quantum capabilities. Then Verifier B uses their trust of device B to certify Alice's quantum capabilities. If Alice and Bob verify each other to be quantum, then the handshake is successful and Alice and Bob may begin running more sophisticated quantum protocols.</p>
+<p>A Verifier tests Alice and Bob by running quantum protocols with measurement statistics designed to distinguish quantum systems from classical. The wavy line connecting Alice and Bob represents the quantum protocol they run to pass tests verify quantum capabilities.</p>
+<p>The described device independent tests can pass in two ways:</p>
+<ol>
+<li>Alice and Bob are both quantum-enabled and performed the task using quantum technology.</li>
+<li>Alice and Bob are conspiring to simulate quantum behavior without implementing authentic quantum technology.</li>
+</ol>
+<h3 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Either Alice or Bob is trusted to perform their quantum tasks without error.</li>
+</ul>
+<p>A device is trusted if it is known to faithfully implement quantum instructions and functionality. Additionally, a trusted device has no hidden correlations or communication channels with other devices. Such hidden correlations would compromise the sanctity of a device-indpenendent test. </p>
+<h3 id="devices">Devices<a class="headerlink" href="#devices" title="Permanent link">&para;</a></h3>
+<p>A Device is a black-box containing classical or quantum-enabled hardware. The responsibilities of a device include:</p>
+<ul>
+<li>Executing classical networking protocols to coordinate with other devices.</li>
+<li>Faithfully performing instructions passed through classical inputs.</li>
+<li>Reliably reporting outcomes through classical outptus.</li>
+<li>Accurately reporting its own quantum abilities and error rates.</li>
+</ul>
+<p>In practice, quantum devices could use different qubit implementations. It is important for a device to be able publicly share its communication medium. A quantum-enabled device may have various quantum abilities for example,</p>
+<ul>
+<li>Preparing superposition qubit states for quantum communication.</li>
+<li>Performing incompatible measurements on qubit states.</li>
+<li>Generating ebits or entangled 2-qubit states.</li>
+</ul>
+<h3 id="verifiers">Verifiers<a class="headerlink" href="#verifiers" title="Permanent link">&para;</a></h3>
+<p>A Verifier is a classical device that referees device-independent tests. The Verifier's responsibilities include:</p>
+<ul>
+<li>Dispatching instructions to test devices.</li>
+<li>Analyzing outcome statistics to determine quantum properties.</li>
+</ul>
+<p>The dispatched instructions can be understood as quantum circuits to be run on the independent test devices. While running the device independent test, the instructions are drawn randomly froma finite set of possible circuits. The dispatched instructions can be considered inputs <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> and <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> within the black-box theory of device independent tests. The Verifier dispatches independent instructions to Alice and Bob and due to the randomness, Alice and Bob are unable to guess the others instruction with any uncertainty. Furthermore, test devices Alice and Bob are not required to know which test they are performing as the Verifier manages the test and the instructions which must be run. </p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<h3 id="dimensionality">Dimensionality<a class="headerlink" href="#dimensionality" title="Permanent link">&para;</a></h3>
+<h4 id="classical-dimension">Classical Dimension<a class="headerlink" href="#classical-dimension" title="Permanent link">&para;</a></h4>
+<p><em>Objective:</em> verify the minimal dimension, <span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>, of the quantum communication hilbert space.</p>
+<p><em>Setting:</em> Alice receives an input <span><span class="MathJax_Preview">x\in\{0,1,\dots,(N-1) \}</span><script type="math/tex">x\in\{0,1,\dots,(N-1) \}</script></span> and Bob has an output <span><span class="MathJax_Preview">b\in\{0,1,\dots,(N-1)\}</span><script type="math/tex">b\in\{0,1,\dots,(N-1)\}</script></span>. <span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span> is the hilbert space dimension which is being tested, <strong>e.g.</strong> <span><span class="MathJax_Preview">N=2</span><script type="math/tex">N=2</script></span> for qubit classical dimension test. Input instructions <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> are drawn from a uniform random distribution.</p>
+<p><em>Protocol:</em></p>
+<ol>
+<li>Alice receives input instructions <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> which encode <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> into computational basis states on a <span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>-dimension hilbert space.</li>
+<li>Alice sends the prepared computational basis state to Bob.</li>
+<li>Bob measures the state in the computational basis and outputs the result to the Verifier.</li>
+</ol>
+<p>The Verifier computes the success probability of the test <span><span class="MathJax_Preview">p_{\text{succ}} = \frac{1}{N} \sum_{x=0}^{N-1} p(b=x|x)</span><script type="math/tex">p_{\text{succ}} = \frac{1}{N} \sum_{x=0}^{N-1} p(b=x|x)</script></span>. The success probability is bounded by the hilber space dimension <span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>, that is, <span><span class="MathJax_Preview">1 \geq \frac{d}{N} \geq p_{\text{succ}} \geq 0</span><script type="math/tex">1 \geq \frac{d}{N} \geq p_{\text{succ}} \geq 0</script></span>. Therefore, the test passes when <span><span class="MathJax_Preview">p_{\text{succ}} = 1</span><script type="math/tex">p_{\text{succ}} = 1</script></span> because <span><span class="MathJax_Preview">d=N</span><script type="math/tex">d=N</script></span> with certainty. Otherwise, the test will fail because the hilbert space dimension is not large enough to encode each input into an orthogonal state, <span><span class="MathJax_Preview">\frac{d}{N} \geq p_{\text{succ}}</span><script type="math/tex">\frac{d}{N} \geq p_{\text{succ}}</script></span>.</p>
+<p>The test identifies the hilbert space dimension <span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span> of a quantum state by running the test with <span><span class="MathJax_Preview">N=d</span><script type="math/tex">N=d</script></span>. If the test passes, the hilbert space must have <span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span> dimensions and therefore <span><span class="MathJax_Preview">\log_2(N)</span><script type="math/tex">\log_2(N)</script></span>-qubits.</p>
+<h3 id="superposition-measurement-incompatibility">Superposition &amp; Measurement Incompatibility<a class="headerlink" href="#superposition-measurement-incompatibility" title="Permanent link">&para;</a></h3>
+<h4 id="single-qubit-bell-violation">Single-Qubit Bell Violation<a class="headerlink" href="#single-qubit-bell-violation" title="Permanent link">&para;</a></h4>
+<p><em>Objective:</em> verify the ability to prepare a superposition state on a qubit and perform incompatible measurments on the qubit state.</p>
+<p><em>Setting:</em> Alice receives an input <span><span class="MathJax_Preview">x\in\{0,1,2,3\}</span><script type="math/tex">x\in\{0,1,2,3\}</script></span>, Bob receives an input <span><span class="MathJax_Preview">y\in\{0,1\}</span><script type="math/tex">y\in\{0,1\}</script></span>, and Bob outputs <span><span class="MathJax_Preview">b\in \{0,1 \}</span><script type="math/tex">b\in \{0,1 \}</script></span>.</p>
+<p><em>Protocol:</em></p>
+<ol>
+<li>Alice receives input <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> and encodes it into the BB84 qubit states <span><span class="MathJax_Preview">\{|0\rangle, |1\rangle, |+\rangle,|-\rangle\}</span><script type="math/tex">\{|0\rangle, |1\rangle, |+\rangle,|-\rangle\}</script></span>.</li>
+<li>Alice sends the qubit to Bob.</li>
+<li>Bob measures with similar projective measurements rotated about the <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>-axis by a Bloch angle of <span><span class="MathJax_Preview">\pi/4</span><script type="math/tex">\pi/4</script></span>.<ul>
+<li>If <span><span class="MathJax_Preview">y=0</span><script type="math/tex">y=0</script></span>, Bob measures with <span><span class="MathJax_Preview">\{R_y(\frac{\pi}{4})|0\rangle, R_y(\frac{\pi}{4})|1\rangle\}</span><script type="math/tex">\{R_y(\frac{\pi}{4})|0\rangle, R_y(\frac{\pi}{4})|1\rangle\}</script></span></li>
+<li>If <span><span class="MathJax_Preview">y=1</span><script type="math/tex">y=1</script></span>, Bob measures with <span><span class="MathJax_Preview">\{R_y(\frac{\pi}{4})|+\rangle, R_y(\frac{\pi}{4})|-\rangle \}</span><script type="math/tex">\{R_y(\frac{\pi}{4})|+\rangle, R_y(\frac{\pi}{4})|-\rangle \}</script></span></li>
+</ul>
+</li>
+<li>Bob outputs measurement result <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> to the Verifier.</li>
+</ol>
+<p><em>Success Requirement:</em> Violation of single-qubit Bell inequaltiy.</p>
+<p>The test passes if Alice and Bob's statistics violate the Bell inequality described in the Measurement Incompatibility Theory section. The optimal classical score of the single-qubit Bell violation is 6, however, quantum mechanics can achieve 6.828 if they employ the described procedure.</p>
+<p>Since this test uses a Bell violation, it can be run in an ideal device-independent setting. If the assumption that only 1-qubit is sent between Alice and Bob holds, the Verifier does not need to trust Alice or Bob to determine that the system is quantum.</p>
+<h3 id="entanglement">Entanglement<a class="headerlink" href="#entanglement" title="Permanent link">&para;</a></h3>
+<h4 id="chsh-bell-violation">CHSH Bell Violation<a class="headerlink" href="#chsh-bell-violation" title="Permanent link">&para;</a></h4>
+<p><em>Objective:</em> verify bipartite entanglement between two devices.</p>
+<p><em>Setting:</em> Alice and Bob share a maximally entangled state and have no communication throughout a round of the test. The Verifier distributes input instructions <span><span class="MathJax_Preview">x \in \{0,1\}</span><script type="math/tex">x \in \{0,1\}</script></span> to Alice and <span><span class="MathJax_Preview">y\in\{0,1\}</span><script type="math/tex">y\in\{0,1\}</script></span> to Bob, who responds with classical outputs <span><span class="MathJax_Preview">a\in\{0,1\}</span><script type="math/tex">a\in\{0,1\}</script></span> and <span><span class="MathJax_Preview">b\in\{0,1\}</span><script type="math/tex">b\in\{0,1\}</script></span>.</p>
+<p><em>Protocol:</em> </p>
+<ol>
+<li>Devices Alice and Bob receive measurement instructions <span><span class="MathJax_Preview">x,y \in \{0,1\}</span><script type="math/tex">x,y \in \{0,1\}</script></span>.</li>
+<li>They perform the prescribed measurement on their shared entangled state.</li>
+<li>They report the binary measurement outcome to the Verifier <span><span class="MathJax_Preview">a,b\in \{0,1\}</span><script type="math/tex">a,b\in \{0,1\}</script></span></li>
+</ol>
+<p><em>Success Requirements:</em> Violation of bipartite CHSH Bell inequality.</p>
+<p>The CHSH inequality bounds the classical correlation between the outputs of Alice and Bob. Quantum mechanics can violate the CHSH inequality by performing a set of incompatible measurements on entangled qubits. The best classical score is <span><span class="MathJax_Preview">2</span><script type="math/tex">2</script></span> while quantum mechanics can achieve <span><span class="MathJax_Preview">2\sqrt{2}</span><script type="math/tex">2\sqrt{2}</script></span> against the CHSH inequality. If the no-signaling condition can be proven true, the Bell violation can be used as an ideal device-independent test to verify the presence of quantum technology in two unknown devices.</p>
+<h2 id="verifying-the-ibm-quantum-computer">Verifying the IBM Quantum Computer<a class="headerlink" href="#verifying-the-ibm-quantum-computer" title="Permanent link">&para;</a></h2>
+<p>We have prototyped the device verification test suite on the IBM quantum computer. The results are reported in the Qiskit Examples page of this website. Our tests should be considered simulations of bipartite quantum communication scenarios, not legitimate verification of quantum behavior. The reason being that Alice and Bob's instructions are executed as part of the same circuit on the same device. This enables classical simulation to suffice for passing the tests as demonstrated by the the Qiskit simulator.</p>
+<p>As an implementation note, the tests on the IBM quantum computer were not run with random inputs. In a real-world scenario, this might allow a classical device to improve its success against a quantum test. However, we trust that the IBM quantum computers faithfully execute their instructions for each shot independently from previous shots. Therefore, randomizing the inputs should not have a meaningful effect on the test performance.</p>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<h3 id="potential-exploits">Potential Exploits<a class="headerlink" href="#potential-exploits" title="Permanent link">&para;</a></h3>
+<p>Our test suite could be exploited by classical simulations of quantum mechanics. The objective of the attacker might be to verify itself as quantum so that it becomes trusted to implement quantum cryptographic protocols with other devices. From this point, an attacker might be able to steal information being transmitted by authentic quantum devices. An unknown device Bob could implement this attack in the following manner:</p>
+<ol>
+<li>Bob intercepts all messages from Verifier A to Alice.</li>
+<li>Bob uses the knowledge of all input instructions coming from Verifier A.</li>
+<li>Bob uses knowledge of the inputs to simulate the statistics signature of the implemented test.</li>
+<li>Verfier A does not know that device Alice has been compromised and trusts Bob as a quantum-enabled device.</li>
+</ol>
+<p>Now that Verifier A trusts Bob as a quantum device, it may use Bob for cryptographic protocols such as key distribution. It is a simple task for Bob to continue simulating quantum protocols while copying all the classical information being passed.</p>
+<p>Such an attack is the exact reason why trust needs to be established between Alice and Verifier A (or Bob and Verifier B). This exploit can be negated by employing an ideal device independent test. This would require physicsal limitations to be placed on the amount of communication between Alice and Bob. For example, a CHSH violation requires that Alice and Bob do not communicate. This restriction can be met provided that Alice and Bob are separated by distances a large distance such that light cannot travel from one device to other within the scope of the test. Likewise, the single-qubit Bell violation used for our measurement incompatibility test requires that no more than one bit or qubit is shared between Alice and Bob. For an ideal device-independent implementation, the test could be performed at high-frequency baud rates such that the channels are operating at their maximum capacity. At high-frequency operation, it would be difficult to perform a classical simulation without sophisticated high-precision classical communication hardware. </p>
+<h3 id="classical-network-security">Classical Network Security<a class="headerlink" href="#classical-network-security" title="Permanent link">&para;</a></h3>
+<p>The classical network communications used for coordinating tests between quantum devices should use state-of-the-art security standards for authenticating and securing communication with remote parties. The developed test suite does not guarantee security, however, it helps verify that more sophisticated cryptographic protocols may be implemented.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="index.html" title="Home" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="Classical_Dimension_Test.html" title="Classical Dimension Test" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Classical Dimension Test
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="assets/javascripts/bundle.4a5ba8d6.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.9b3611bd.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+    
+  </body>
+</html>

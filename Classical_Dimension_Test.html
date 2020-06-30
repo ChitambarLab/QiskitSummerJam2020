@@ -1,0 +1,795 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.3.3">
+    
+    
+      
+        <title>Classical Dimension Test - Qiskit Summer Jam 2020</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a-rudimentary-test-for-classical-dimension" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="." title="Qiskit Summer Jam 2020" class="md-header-nav__button md-logo" aria-label="Qiskit Summer Jam 2020">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Qiskit Summer Jam 2020
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Classical Dimension Test
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Qiskit Summer Jam 2020" class="md-nav__button md-logo" aria-label="Qiskit Summer Jam 2020">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Qiskit Summer Jam 2020
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="index.html" title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="device_independent_handshake_protocol.html" title="Verification Protocol" class="md-nav__link">
+      Verification Protocol
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Qiskit Examples
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Qiskit Examples" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Qiskit Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Classical Dimension Test
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="Classical_Dimension_Test.html" title="Classical Dimension Test" class="md-nav__link md-nav__link--active">
+      Classical Dimension Test
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-1" class="md-nav__link">
+    Test 1)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-2" class="md-nav__link">
+    Test 2)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Incompatible_Measurement.html" title="Incompatible Measurement Test" class="md-nav__link">
+      Incompatible Measurement Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Entanglement.html" title="Entanglement Test" class="md-nav__link">
+      Entanglement Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="when_tests_fail.html" title="Validating Test Failures" class="md-nav__link">
+      Validating Test Failures
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Device-Independence Theory
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Device-Independence Theory" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Device-Independence Theory
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="theory_device_independent_tests.html" title="Device-Independent Tests" class="md-nav__link">
+      Device-Independent Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="theory_dimension_tests.md" title="Verifying Dimension" class="md-nav__link">
+      Verifying Dimension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Theory_for_Incompatible_Measurement_Test.html" title="Verifying Measurements" class="md-nav__link">
+      Verifying Measurements
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="CHSH_theory.html" title="Verifying Entanglement" class="md-nav__link">
+      Verifying Entanglement
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Software Documentation
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Software Documentation" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Software Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Device_Independent_Test_Documentation.html" title="device_independent_test Module" class="md-nav__link">
+      device_independent_test Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Quantum_Communicator_Example.html" title="Dispatcher Example" class="md-nav__link">
+      Dispatcher Example
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-1" class="md-nav__link">
+    Test 1)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-2" class="md-nav__link">
+    Test 2)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+
+<h1 id="a-rudimentary-test-for-classical-dimension">A Rudimentary Test for Classical Dimension<a class="headerlink" href="#a-rudimentary-test-for-classical-dimension" title="Permanent link">&para;</a></h1>
+<p>Alice receives an input <span><span class="MathJax_Preview">x\in\{0,1,2,3\}</span><script type="math/tex">x\in\{0,1,2,3\}</script></span> and sends it to Bob using 2 classical bits (<span><span class="MathJax_Preview">|0\rangle</span><script type="math/tex">|0\rangle</script></span>, <span><span class="MathJax_Preview">|1\rangle</span><script type="math/tex">|1\rangle</script></span> qubits). Bob measures in the computational basis and outputs the result. The success probability for quantum and classical scenarios is bounded by  <span><span class="MathJax_Preview">d/N \geq 1/N\sum_x p(b=x,x)</span><script type="math/tex">d/N \geq 1/N\sum_x p(b=x,x)</script></span>, where <span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span> is the number of dimensions in the hilbert space and <span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span> is the number of inputs <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>. </p>
+<ul>
+<li>The first test considers when Alice and Bob verify the ability to send two bits.</li>
+<li>The second test considers when Alice encodes the input onto a single bit. </li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span><span class="n">execute</span><span class="p">,</span> <span class="n">IBMQ</span>
+<span class="kn">from</span> <span class="nn">qiskit.tools.monitor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qiskit.providers.ibmq.managed</span> <span class="kn">import</span> <span class="n">IBMQJobManager</span>
+
+<span class="n">provider</span> <span class="o">=</span> <span class="n">IBMQ</span><span class="o">.</span><span class="n">load_account</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">context</span>
+<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">dimension</span>
+<span class="kn">from</span> <span class="nn">device_independent_test.handshake</span> <span class="kn">import</span> <span class="n">HandShake</span>
+<span class="kn">from</span> <span class="nn">device_independent_test.quantum_communicator</span> <span class="kn">import</span> <span class="n">LocalDispatcher</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">bit_circ</span> <span class="o">=</span> <span class="n">dimension</span><span class="o">.</span><span class="n">prepare_bit_circuit</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">bit_circ</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">          
+q_0: ─────
+     ┌───┐
+q_1: ┤ X ├
+     ├───┤
+q_2: ┤ X ├
+     └───┘
+q_3: ─────
+     ┌───┐
+q_4: ┤ X ├
+     └───┘</pre>
+
+<h2 id="test-1">Test 1)<a class="headerlink" href="#test-1" title="Permanent link">&para;</a></h2>
+<p>Alice and Bob can prepare and measure a set of orthogonal measurements on a 4-dimensional Hilbert space. Alice simply encodes the input <span><span class="MathJax_Preview">x\in\{0,1,2,3\}</span><script type="math/tex">x\in\{0,1,2,3\}</script></span> into the bit string and Bob decodes it without error. Assuming a uniform prior distribution for <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>, the success probability for this case is <span><span class="MathJax_Preview">1 \geq 1/4 \sum_x p(b=x|x)</span><script type="math/tex">1 \geq 1/4 \sum_x p(b=x|x)</script></span>.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># alice prepares the complete set of orthogonal states</span>
+
+<span class="n">qc_00</span> <span class="o">=</span> <span class="n">dimension</span><span class="o">.</span><span class="n">prepare_bit_circuit</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">qc_01</span> <span class="o">=</span> <span class="n">dimension</span><span class="o">.</span><span class="n">prepare_bit_circuit</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">qc_10</span> <span class="o">=</span> <span class="n">dimension</span><span class="o">.</span><span class="n">prepare_bit_circuit</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">qc_11</span> <span class="o">=</span> <span class="n">dimension</span><span class="o">.</span><span class="n">prepare_bit_circuit</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">qc_00</span><span class="p">,</span> <span class="n">qc_01</span><span class="p">,</span> <span class="n">qc_10</span><span class="p">,</span> <span class="n">qc_11</span><span class="p">]</span>
+
+<span class="c1"># Bob measures in the computational basis.</span>
+<span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">circuits</span><span class="p">:</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">qc</span> <span class="ow">in</span> <span class="n">circuits</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">())</span>
+</code></pre></div>
+
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">         ░ ┌─┐   
+   q_0: ─░─┤M├───
+         ░ └╥┘┌─┐
+   q_1: ─░──╫─┤M├
+         ░  ║ └╥┘
+meas_0: ════╩══╬═
+               ║ 
+meas_1: ═══════╩═
+                 </pre>
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">              ░ ┌─┐   
+   q_0: ──────░─┤M├───
+        ┌───┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├─░──╫─┤M├
+        └───┘ ░  ║ └╥┘
+meas_0: ═════════╩══╬═
+                    ║ 
+meas_1: ════════════╩═
+                      </pre>
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">        ┌───┐ ░ ┌─┐   
+   q_0: ┤ X ├─░─┤M├───
+        └───┘ ░ └╥┘┌─┐
+   q_1: ──────░──╫─┤M├
+              ░  ║ └╥┘
+meas_0: ═════════╩══╬═
+                    ║ 
+meas_1: ════════════╩═
+                      </pre>
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">        ┌───┐ ░ ┌─┐   
+   q_0: ┤ X ├─░─┤M├───
+        ├───┤ ░ └╥┘┌─┐
+   q_1: ┤ X ├─░──╫─┤M├
+        └───┘ ░  ║ └╥┘
+meas_0: ═════════╩══╬═
+                    ║ 
+meas_1: ════════════╩═
+                      </pre>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># running tests on quantum computer</span>
+
+<span class="k">def</span> <span class="nf">run_job</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">shots</span><span class="p">):</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">),</span> <span class="n">shots</span><span class="o">=</span><span class="n">shots</span><span class="p">)</span>
+    <span class="n">job_monitor</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">job</span>
+
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">d4_job_00</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_00</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">d4_job_01</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_01</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">d4_job_10</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_10</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">d4_job_11</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_11</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>Job Status: job has successfully run
+Job Status: job has successfully run
+Job Status: job has successfully run
+Job Status: job has successfully run
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># parsing statistics</span>
+<span class="n">d4_counts_00</span> <span class="o">=</span> <span class="n">d4_job_00</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">d4_counts_01</span> <span class="o">=</span> <span class="n">d4_job_01</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">d4_counts_10</span> <span class="o">=</span> <span class="n">d4_job_10</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">d4_counts_11</span> <span class="o">=</span> <span class="n">d4_job_11</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+
+<span class="c1"># success probability for a d=4 system is 1</span>
+<span class="n">p_succ_00</span> <span class="o">=</span> <span class="n">d4_counts_00</span><span class="p">[</span><span class="s2">&quot;00&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span>
+<span class="n">p_succ_01</span> <span class="o">=</span> <span class="n">d4_counts_01</span><span class="p">[</span><span class="s2">&quot;10&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span> <span class="c1"># qiskits labeling is weird</span>
+<span class="n">p_succ_10</span> <span class="o">=</span> <span class="n">d4_counts_10</span><span class="p">[</span><span class="s2">&quot;01&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span> <span class="c1"># qiskits labeling is weird</span>
+<span class="n">p_succ_11</span> <span class="o">=</span> <span class="n">d4_counts_11</span><span class="p">[</span><span class="s2">&quot;11&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span>
+
+<span class="n">d4_success_probability</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_succ_00</span> <span class="o">+</span> <span class="n">p_succ_01</span> <span class="o">+</span> <span class="n">p_succ_10</span> <span class="o">+</span> <span class="n">p_succ_11</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span> <span class="c1"># divide by 4 because there are 4 inputs.</span>
+
+<span class="n">d4_success_probability</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>1.0
+</code></pre></div>
+
+
+<p>Above test can be run as the following with specific tolerance and shots.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+<span class="n">handshake</span> <span class="o">=</span> <span class="n">HandShake</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span>
+
+<span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">dimensionality</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>Passed Dimensionality with value:  1.0
+
+
+
+
+
+(True, 1.0)
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_london&#39;</span><span class="p">)])</span>
+<span class="n">handshake</span> <span class="o">=</span> <span class="n">HandShake</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span>
+
+<span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">dimensionality</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>Passed Dimensionality with value:  0.9065
+
+
+
+
+
+(True, 0.9065)
+</code></pre></div>
+
+
+<h2 id="test-2">Test 2)<a class="headerlink" href="#test-2" title="Permanent link">&para;</a></h2>
+<p>Alice can only encode information in one classical bit, the second bit is constant. The measurement success_probability is <span><span class="MathJax_Preview">0.5 \geq 1/4 \sum_x p(b=x|x)</span><script type="math/tex">0.5 \geq 1/4 \sum_x p(b=x|x)</script></span>.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">d2_job_00</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_00</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">d2_job_01</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_00</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">d2_job_10</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_10</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">d2_job_11</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">qc_10</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">counts_00</span> <span class="o">=</span> <span class="n">d2_job_00</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">counts_01</span> <span class="o">=</span> <span class="n">d2_job_01</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">counts_10</span> <span class="o">=</span> <span class="n">d2_job_10</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">counts_11</span> <span class="o">=</span> <span class="n">d2_job_11</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+
+<span class="n">d2_p_succ_00</span> <span class="o">=</span> <span class="n">counts_00</span><span class="p">[</span><span class="s2">&quot;00&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span> <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;00&quot;</span> <span class="ow">in</span> <span class="n">counts_00</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+<span class="n">d2_p_succ_01</span> <span class="o">=</span> <span class="n">counts_01</span><span class="p">[</span><span class="s2">&quot;10&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span> <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;10&quot;</span> <span class="ow">in</span> <span class="n">counts_01</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="c1"># qiskits labeling is weird</span>
+<span class="n">d2_p_succ_10</span> <span class="o">=</span> <span class="n">counts_10</span><span class="p">[</span><span class="s2">&quot;01&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span> <span class="k">if</span> <span class="s2">&quot;01&quot;</span> <span class="ow">in</span> <span class="n">counts_10</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="c1"># qiskits labeling is weird</span>
+<span class="n">d2_p_succ_11</span> <span class="o">=</span> <span class="n">counts_11</span><span class="p">[</span><span class="s2">&quot;11&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">shots</span> <span class="k">if</span> <span class="s2">&quot;11&quot;</span> <span class="ow">in</span> <span class="n">counts_11</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+<span class="n">d2_success_probability</span> <span class="o">=</span> <span class="p">(</span><span class="n">d2_p_succ_00</span> <span class="o">+</span> <span class="n">d2_p_succ_01</span> <span class="o">+</span> <span class="n">d2_p_succ_10</span> <span class="o">+</span> <span class="n">d2_p_succ_11</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="n">d2_success_probability</span> <span class="c1"># the classical bound is 0.5 </span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="device_independent_handshake_protocol.html" title="Verification Protocol" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Verification Protocol
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="Incompatible_Measurement.html" title="Incompatible Measurement Test" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Incompatible Measurement Test
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="assets/javascripts/bundle.4a5ba8d6.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.9b3611bd.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+    
+  </body>
+</html>

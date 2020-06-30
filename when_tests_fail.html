@@ -1,0 +1,641 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.3.3">
+    
+    
+      
+        <title>Validating Test Failures - Qiskit Summer Jam 2020</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.fe0cca5b.min.css">
+      
+        <link rel="stylesheet" href="assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-happens-when-the-wrong-operations-are-performed" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="." title="Qiskit Summer Jam 2020" class="md-header-nav__button md-logo" aria-label="Qiskit Summer Jam 2020">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Qiskit Summer Jam 2020
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Validating Test Failures
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Qiskit Summer Jam 2020" class="md-nav__button md-logo" aria-label="Qiskit Summer Jam 2020">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Qiskit Summer Jam 2020
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="index.html" title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="device_independent_handshake_protocol.html" title="Verification Protocol" class="md-nav__link">
+      Verification Protocol
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Qiskit Examples
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Qiskit Examples" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Qiskit Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Classical_Dimension_Test.html" title="Classical Dimension Test" class="md-nav__link">
+      Classical Dimension Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Incompatible_Measurement.html" title="Incompatible Measurement Test" class="md-nav__link">
+      Incompatible Measurement Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Entanglement.html" title="Entanglement Test" class="md-nav__link">
+      Entanglement Test
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="when_tests_fail.html" title="Validating Test Failures" class="md-nav__link md-nav__link--active">
+      Validating Test Failures
+    </a>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Device-Independence Theory
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Device-Independence Theory" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Device-Independence Theory
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="theory_device_independent_tests.html" title="Device-Independent Tests" class="md-nav__link">
+      Device-Independent Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="theory_dimension_tests.md" title="Verifying Dimension" class="md-nav__link">
+      Verifying Dimension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Theory_for_Incompatible_Measurement_Test.html" title="Verifying Measurements" class="md-nav__link">
+      Verifying Measurements
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="CHSH_theory.html" title="Verifying Entanglement" class="md-nav__link">
+      Verifying Entanglement
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Software Documentation
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Software Documentation" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Software Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Device_Independent_Test_Documentation.html" title="device_independent_test Module" class="md-nav__link">
+      device_independent_test Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Quantum_Communicator_Example.html" title="Dispatcher Example" class="md-nav__link">
+      Dispatcher Example
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="what-happens-when-the-wrong-operations-are-performed">What Happens When the Wrong Operations are Performed?<a class="headerlink" href="#what-happens-when-the-wrong-operations-are-performed" title="Permanent link">&para;</a></h1>
+<p>In our tests we trust the prepartory system (Alice). We assume Alice properly performs the correct operations and prepares the desired states. However, we do not claim to know if Bob can properly perform the required tests. What happens if Bob does not perform the correct operations? This document runs through examples of performing the wrong measurements and how our tests detect this.</p>
+<h1 id="dimensionality-testing">Dimensionality Testing<a class="headerlink" href="#dimensionality-testing" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+
+<h1 id="incompatible-measurement-testing">Incompatible Measurement Testing<a class="headerlink" href="#incompatible-measurement-testing" title="Permanent link">&para;</a></h1>
+<p>This module determines if a quantum device can perform incompatible measurements. Recall that incompatible measurments are those which do not commute, measuring in the Z and X bases, for example. Below the compatible measurement from the theory notebook is performed. Bob's first (y=0) projective measurement performs the following rotation (the global phase on the second basis state has been changed):
+\begin{pmatrix}
+    cos(\theta) &amp; sin(\theta)\
+    -sin(\theta) &amp; cos(\theta)\
+\end{pmatrix}
+Thus we can perform Bob's measurement via a Y rotation by - <span><span class="MathJax_Preview">2\theta</span><script type="math/tex">2\theta</script></span> then a measurment in the computational basis. Now let's construct the matrix for the compatible measurement. This is given by:
+\begin{pmatrix}
+    sin(\theta + \pi /4) &amp; -cos(\theta + \pi /4)\
+    cos(\theta + \pi /4) &amp; sin(\theta + \pi /4)\
+\end{pmatrix}
+Using a couple trig properties, this becomes
+\begin{pmatrix}
+    cos(\pi /4 -\theta) &amp; -sin(\pi /4 -\theta)\
+    sin(\pi / 4 -\theta) &amp; cos(\pi /4 -\theta)\
+\end{pmatrix}
+The above matrix is a rotation of <span><span class="MathJax_Preview">2(\pi /4 -\theta)</span><script type="math/tex">2(\pi /4 -\theta)</script></span> around the Y axis. In the incompatible measurement test, we use <span><span class="MathJax_Preview">\theta = \pi / 8</span><script type="math/tex">\theta = \pi / 8</script></span>. Thus, this measurement is achieved via a rotation of <span><span class="MathJax_Preview">\pi / 4</span><script type="math/tex">\pi / 4</script></span>.<br><br>
+The code snippet below implements this compatible measurement. This set of projective measurements should not violate the classical bounds.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">IBMQ</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">context</span>
+<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">incompatible_measurement</span>
+<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">quantum_communicator</span>
+<span class="n">provider</span> <span class="o">=</span> <span class="n">IBMQ</span><span class="o">.</span><span class="n">load_account</span><span class="p">()</span>
+
+<span class="n">dispatch</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+
+<span class="c1"># create bb84 states</span>
+<span class="n">pre_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bb84_states</span><span class="p">()]</span>
+
+<span class="c1"># measure in the wrong basis</span>
+<span class="n">qc0</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qc0</span><span class="o">.</span><span class="n">u3</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">qc0</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">qc1</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">qc1</span><span class="o">.</span><span class="n">u3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">qc1</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">post_ops</span> <span class="o">=</span> <span class="p">[[</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)],[</span><span class="n">qc0</span><span class="p">,</span><span class="n">qc1</span><span class="p">]]</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">dispatch</span><span class="o">.</span><span class="n">batch_run_and_transmit</span><span class="p">(</span><span class="n">pre_ops</span><span class="p">,</span><span class="n">post_ops</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">violation</span> <span class="o">=</span> <span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bell_violation</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">violation</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>ibmqfactory.load_account:WARNING:2020-06-29 13:26:31,632: Credentials are already in use. The existing account in the session will be replaced.
+
+
+4.04
+</code></pre></div>
+
+
+<h1 id="entanglement-testing">Entanglement Testing<a class="headerlink" href="#entanglement-testing" title="Permanent link">&para;</a></h1>
+<p>The CHSH test in this library truly relies both upon entanglement and incompatible measurments. For the purposes of this document, we will assume that the ability to perform incompatible measurments has already been verified. The code below demonstrates what happens if an entangled pair is not generated. The first code block demonstrates the value of the CHSH test for two randomly generated states. The second demonstrates the result of the CHSH test when the entangling CNOT fails with a set failure probability.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">random_unitary</span>
+
+<span class="n">dispatch</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate two random states via random unitary operations</span>
+<span class="n">random_circ</span> <span class="o">=</span> <span class="n">random_unitary</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">random_unitary</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">unitary</span><span class="p">(</span><span class="n">random_circ</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;random unitaries&#39;</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="n">post_ops</span> <span class="o">=</span> <span class="p">[[</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)],[</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_ZW</span><span class="p">(),</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_ZV</span><span class="p">(),</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_XW</span><span class="p">(),</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_XV</span><span class="p">()]]</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">dispatch</span><span class="o">.</span><span class="n">batch_run_and_transmit</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span><span class="n">post_ops</span><span class="p">,</span><span class="n">shots</span><span class="p">)</span>
+
+<span class="n">expected_ZW</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">expected_ZV</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">expected_XW</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">expected_XV</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shots</span><span class="p">)</span>
+
+<span class="n">test_val</span> <span class="o">=</span> <span class="p">(</span><span class="n">expected_ZW</span> <span class="o">+</span> <span class="n">expected_ZV</span> <span class="o">+</span> <span class="n">expected_XW</span> <span class="o">-</span> <span class="n">expected_XV</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">test_val</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>-0.10199999999999998
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">context</span>
+<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">entanglement</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+
+<span class="n">dispatch</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">runs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">p_failure</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">post_ops</span> <span class="o">=</span> <span class="p">[[</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)],[</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_ZW</span><span class="p">(),</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_ZV</span><span class="p">(),</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_XW</span><span class="p">(),</span><span class="n">entanglement</span><span class="o">.</span><span class="n">measure_in_XV</span><span class="p">()]]</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;00&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;11&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;10&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;01&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">},{</span><span class="s2">&quot;00&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;11&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;10&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;01&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">},{</span><span class="s2">&quot;00&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;11&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;10&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;01&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">},{</span><span class="s2">&quot;00&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;11&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;10&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;01&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">runs</span><span class="p">):</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">p_failure</span><span class="p">:</span>
+        <span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">dispatch</span><span class="o">.</span><span class="n">batch_run_and_transmit</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span><span class="n">post_ops</span><span class="p">,</span><span class="n">shots</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">key</span><span class="p">]</span><span class="o">+</span><span class="n">temp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
+
+<span class="n">expected_ZW</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shots</span><span class="o">*</span><span class="n">runs</span><span class="p">)</span>
+<span class="n">expected_ZV</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shots</span><span class="o">*</span><span class="n">runs</span><span class="p">)</span>
+<span class="n">expected_XW</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">shots</span><span class="o">*</span><span class="n">runs</span><span class="p">)</span>
+<span class="n">expected_XV</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shots</span><span class="o">*</span><span class="n">runs</span><span class="p">)</span>
+
+<span class="n">test_val</span> <span class="o">=</span> <span class="p">(</span><span class="n">expected_ZW</span> <span class="o">+</span> <span class="n">expected_ZV</span> <span class="o">+</span> <span class="n">expected_XW</span> <span class="o">-</span> <span class="n">expected_XV</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">test_val</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>2.846
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="Entanglement.html" title="Entanglement Test" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Entanglement Test
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="theory_device_independent_tests.html" title="Device-Independent Tests" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Device-Independent Tests
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="assets/javascripts/bundle.4a5ba8d6.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.9b3611bd.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+    
+  </body>
+</html>
