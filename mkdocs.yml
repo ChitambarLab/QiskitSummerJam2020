@@ -7,6 +7,7 @@ theme:
 use_directory_urls: false
 nav:
   - Home: index.md
+  - Verification Protocol: device_independent_handshake_protocol.md
   - Theory:
       - Device-Independent Tests: theory_device_independent_tests.md
       - Verifying Dimension: theory_dimension_tests.md
