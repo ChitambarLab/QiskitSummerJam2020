@@ -6,9 +6,8 @@ from qiskit.quantum_info import Statevector
 from device_independent_test import entanglement
 
 class module_test_cases(unittest.TestCase):
-	def test_EntanglmentTest(self):
-		test = entanglement.EntanglementTest()
-		qc = test.create_bell_state()
+	def test_create_bell_state(self):
+		qc = entanglement.create_bell_state()
 
 		test_state = Statevector.from_instruction(qc)
 

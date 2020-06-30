@@ -9,11 +9,12 @@ from device_independent_test import quantum_communicator
 class module_test_cases(unittest.TestCase):
 	def test_run_test(self):
 		provider = IBMQ.load_account()
-		communicator = quantum_communicator.LocalDispatcher(
-						[provider.get_backend('ibmq_qasm_simulator')])
-		test = incompatible_measurement.run_test(communicator,0.0,1000)
+		backend = provider.get_backend('ibmq_qasm_simulator')
+		communicator = quantum_communicator.LocalDispatcher([backend])
+
+		test = incompatible_measurement.run_test(communicator, 0.1, 1000)
+
 		self.assertTrue(test[0])
-		print("Violation: ", test[1])
 
 	def test_conditional_probs(self):
 		shots = 1000
@@ -51,8 +52,7 @@ class module_test_cases(unittest.TestCase):
 			'0110': 1, '1110': 5, '1000': 91, '0011': 16
 		}
 
-		self.assertAlmostEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 0.806)
-
+		self.assertAlmostEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 6.806)
 
 	def test_bell_score(self):
 		y0_probs = np.array([[1,0,1,0],[0,1,0,1]])
