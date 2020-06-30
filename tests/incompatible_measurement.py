@@ -51,7 +51,7 @@ class module_test_cases(unittest.TestCase):
 			'0110': 1, '1110': 5, '1000': 91, '0011': 16
 		}
 
-		self.assertAlmostEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 0.806)
+		self.assertAlmostEqual(incompatible_measurement.bell_violation(counts_y0, counts_y1, shots, shots), 6.806)
 
 	def test_bell_score(self):
 		y0_probs = np.array([[1,0,1,0],[0,1,0,1]])
