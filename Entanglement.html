@@ -262,6 +262,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="simulator_vs_quantum.html" title="Simulator vs. Quantum Machine" class="md-nav__link">
+      Simulator vs. Quantum Machine
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -463,8 +475,8 @@ q_0: ┤ H ├──■──
 q_1: ─────┤ X ├
           └───┘</pre>
 
-<p>Then, Alice measures with observables <span><span class="MathJax_Preview">\{X, Z\}</span><script type="math/tex">\{X, Z\}</script></span>, and Bob measures with observables <span><span class="MathJax_Preview">\{H, H'\}</span><script type="math/tex">\{H, H'\}</script></span>, where <span><span class="MathJax_Preview">X, Z</span><script type="math/tex">X, Z</script></span> are Pauli operator and <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> is a Hardamard operator, and <span><span class="MathJax_Preview">H' = \begin{pmatrix} 1 &amp; -1 \\ -1 &amp; -1 \end{pmatrix}</span><script type="math/tex">H' = \begin{pmatrix} 1 & -1 \\ -1 & -1 \end{pmatrix}</script></span>.</p>
-<p>Measuring in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span> basis is a default measurement, and we get the following equivalent circuit. Note that <span><span class="MathJax_Preview">H = (X+Z)/2</span><script type="math/tex">H = (X+Z)/2</script></span> and <span><span class="MathJax_Preview">H' = (X-Z)/2</span><script type="math/tex">H' = (X-Z)/2</script></span>.</p>
+<p>Then, Alice measures with observables <span><span class="MathJax_Preview">\{X, Z\}</span><script type="math/tex">\{X, Z\}</script></span>, and Bob measures with observables <span><span class="MathJax_Preview">\{H, H'\}</span><script type="math/tex">\{H, H'\}</script></span>, where <span><span class="MathJax_Preview">X, Z</span><script type="math/tex">X, Z</script></span> are Pauli operator and <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> is a Hardamard operator, and <span><span class="MathJax_Preview">H' = \begin{pmatrix} -1 &amp; 1 \\ 1 &amp; 1 \end{pmatrix}</span><script type="math/tex">H' = \begin{pmatrix} -1 & 1 \\ 1 & 1 \end{pmatrix}</script></span>.</p>
+<p>Measuring in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span> basis is a default measurement, and we get the following equivalent circuit. Note that <span><span class="MathJax_Preview">H = (X+Z)/2</span><script type="math/tex">H = (X+Z)/2</script></span> and <span><span class="MathJax_Preview">H' = (-X+Z)/2</span><script type="math/tex">H' = (-X+Z)/2</script></span>.</p>
 <ul>
 <li>measure in <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> = <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> + measure in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span></li>
 <li>measure in <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> = <span><span class="MathJax_Preview">SHTH</span><script type="math/tex">SHTH</script></span> + measure in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span></li>

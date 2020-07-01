@@ -195,13 +195,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#objective" class="md-nav__link">
-    Objective
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#motivation" class="md-nav__link">
     Motivation
   </a>
@@ -209,8 +202,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage-guide" class="md-nav__link">
-    Usage Guide
+  <a href="#objectives" class="md-nav__link">
+    Objectives
   </a>
   
 </li>
@@ -232,6 +225,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codebase-guide" class="md-nav__link">
+    Codebase Guide
+  </a>
   
 </li>
       
@@ -330,6 +330,18 @@
   <li class="md-nav__item">
     <a href="when_tests_fail.html" title="Validating Test Failures" class="md-nav__link">
       Validating Test Failures
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="simulator_vs_quantum.html" title="Simulator vs. Quantum Machine" class="md-nav__link">
+      Simulator vs. Quantum Machine
     </a>
   </li>
 
@@ -497,13 +509,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#objective" class="md-nav__link">
-    Objective
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#motivation" class="md-nav__link">
     Motivation
   </a>
@@ -511,8 +516,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage-guide" class="md-nav__link">
-    Usage Guide
+  <a href="#objectives" class="md-nav__link">
+    Objectives
   </a>
   
 </li>
@@ -534,6 +539,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codebase-guide" class="md-nav__link">
+    Codebase Guide
+  </a>
   
 </li>
       
@@ -562,12 +574,28 @@
                 
                 <h1 id="device-independent-handshake-protocol">Device-Independent Handshake Protocol<a class="headerlink" href="#device-independent-handshake-protocol" title="Permanent link">&para;</a></h1>
 <p><strong><em>A test suite to verify the quantum capabalities of unknown devices.</em></strong></p>
-<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
-<p>Our goal is to deliver a test suite which verifies quantum properties in bipartite communication scenarios. Our tests use measurement statistics to deduce properties such as hilbert space dimension, superpostion, measurement incompatibility, and entanglement. The test suite serves as piece of a broader handshake protocol required to establish trust of an unknown quantum devices. Our protocol is tested using Qiskit and the IBM quantum computers to simulate the bipartite quantum communication scenarios for which our handshake protocol is designed.</p>
 <h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
 <p>The quantum internet will enable long-distance quantum cryptography, teleportation, and distributed quantum computation. Inevitably, long-distance quantum communications will require a large network of intermediary quantum-enabled devices [1]. As the size the size of quantum networks increases, a handshake protocol will be required to establish connections with unknown devices. It will be an important part of this handshake to determine whether a device can faithfully perform simple quantum communications tasks. </p>
-<h2 id="usage-guide">Usage Guide<a class="headerlink" href="#usage-guide" title="Permanent link">&para;</a></h2>
-<p>Our codebase is found on github, <a href="https://github.com/ChitambarLab/QiskitSummerJam2020">https://github.com/ChitambarLab/QiskitSummerJam2020</a>. Please review the README.md for details regarding project use. </p>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong><em>Develop a device-independent handshake protocol to verify quantum systems</em></strong><ul>
+<li>Verifies dimension, superposition, incompatible measurements, and entanglement.</li>
+<li>Applies genericly to future quantum networks of any design.</li>
+<li>Protocol is documented on the <a href="https://chitambarlab.github.io/QiskitSummerJam2020/device_independent_handshake_protocol.html">Verification Protocol page</a>.</li>
+</ul>
+</li>
+<li><strong><em>Create a python module to perform the handshake protocol</em></strong><ul>
+<li>The <code>device_independent_test</code> module provides a <code>HandShake</code> api for running varios device-independent tests for bipartite communication scenarios.</li>
+<li>Our code is found at: <a href="https://github.com/ChitambarLab/QiskitSummerJam2020">https://github.com/ChitambarLab/QiskitSummerJam2020</a></li>
+<li>Software documentation is located under the 'Software Documentation' tab on the left-hand side</li>
+</ul>
+</li>
+<li><strong><em>Prototype and test the handshake with Qiskit</em></strong><ul>
+<li>Descriptions of test implementations on the Qiskit simulator and IBM quantum computers is found under the Qiskit Examples tab.</li>
+<li>The theory behind device independent tests is documented under the 'Device-Independence Theory' tab on the left-hand size.</li>
+</ul>
+</li>
+</ol>
 <h2 id="about-the-team">About the Team<a class="headerlink" href="#about-the-team" title="Permanent link">&para;</a></h2>
 <p>We are an interdisciplinary group of PhD students working under Eric Chitambar in the Coordinated Science Lab at University of Illinois Urbana-Champaign.</p>
 <h3 id="members">Members<a class="headerlink" href="#members" title="Permanent link">&para;</a></h3>
@@ -577,6 +605,11 @@
 <li>Louis Schatzki</li>
 <li>Brian Doolittle</li>
 </ul>
+<h2 id="codebase-guide">Codebase Guide<a class="headerlink" href="#codebase-guide" title="Permanent link">&para;</a></h2>
+<p>The best way to consume our project is through this website. All notebooks have been converted into a static website made with <code>mkdocs</code> and hosted with GitHub pages. </p>
+<p>Our codebase is found on github, <a href="https://github.com/ChitambarLab/QiskitSummerJam2020">https://github.com/ChitambarLab/QiskitSummerJam2020</a>.</p>
+<p>The <code>device_independent_test</code> module contains python software for running our <code>HandShake.test_all()</code> test suite in a generic manner. The <code>quantum_communicator</code> module serves as the interface between our <code>HandShake</code> module and the quantum devices. For the scope of this project we ran all tests for quantum devices on a single quantum machine.</p>
+<p>Please review the <a href="https://chitambarlab.github.io/QiskitSummerJam2020/Device_Independent_Test_Documentation.html">Software Documentation</a>, <a href="https://chitambarlab.github.io/QiskitSummerJam2020/Classical_Dimension_Test.html">Qiskit Examples</a> and <a href="https://github.com/ChitambarLab/QiskitSummerJam2020/tree/master#usage-guide">Usage Guide</a> for details regarding project use. </p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <p>[1] Wehner, Stephanie, David Elkouss, and Ronald Hanson. "Quantum internet: A vision for the road ahead." <em>Science</em> 362.6412 (2018).</p>
 <div class="codehilite"><pre><span></span><code>

@@ -251,6 +251,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="simulator_vs_quantum.html" title="Simulator vs. Quantum Machine" class="md-nav__link">
+      Simulator vs. Quantum Machine
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -431,10 +443,9 @@
                 
                 
                 <h1 id="device-independent-test-documentation">Device Independent Test Documentation<a class="headerlink" href="#device-independent-test-documentation" title="Permanent link">&para;</a></h1>
-<p>Below is a draft of an introduction.</p>
 <p>Device Independent Test is a python library which runs tests on quantum systems through IBM's Qiskit.<br><br>
 The motivation for this library is the following scenario: there are two quantum computers (say, Alice's and Bob's) with some sort of network connecting them. We trust Alice's computer to be a functional quantum device. However, we do not yet trust Bob's computer. We wish to transmit states from Alice's computer to Bob's, and ask Bob to run certain operations to ascertain the functionality of our transmission and his system. <br><br>
-There are [NUMBER] tests in this library: dimensionality, incompatible measurements, and entanglement.<br><br>
+There are 3 tests in this library: dimensionality, incompatible measurements, and entanglement.<br><br>
 This library includes the following modules: dimension, incompatible_measurement, and entanglement. In addition, there are two classes: handshake and QuantumDispatcher. The documentation below goes over each of these files in detail.</p>
 <h1 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h1>
 <h2 id="handshake">HandShake<a class="headerlink" href="#handshake" title="Permanent link">&para;</a></h2>
@@ -445,32 +456,24 @@ This library includes the following modules: dimension, incompatible_measurement
         <th>Descriptions</th>
     </tr>
     <tr>
-        <td>__init__(QuantumDispatcher)</td>
-        <td>Constructor storing a QuantumDispatcher instance to run tests with.</td>
-    </tr>
-    <tr>
-        <td>dimensionality(tolerance, shots)</td>
+        <td><pre>dimensionality(tolerance, shots)</pre></td>
         <td>Runs the dimensionality test with specified tolerance (float) and number of shots (int).</td>
     </tr>
     <tr>
-        <td>measurement_incompatibility(tolerance, shots)</td>
+        <td><pre>measurement_incompatibility(tolerance, shots)</pre></td>
         <td>Runs the incompatible measurement test with specified tolerance and shots. Returns a tuple with the pass/fail and the value of the bell violation.</td>
     </tr>
     <tr>
-        <td>entanglement(tolerance, shots)</td>
+        <td><pre>entanglement(tolerance, shots)</pre></td>
         <td>Runs the entanglement test with specified tolerance and number of shots.</td>
     </tr>
     <tr>
-        <td>test('name',tolerance, shots)</td>
-        <td>Runs the test specified by 'name'. Prints available tests if 'name' does not exit.</td>
+        <td><pre>test_all(params)</pre></td>
+        <td>Run all tests to verify functioning computer/connection. params should look like: {"dimensionality": {"tolerance": 0.1, "shots": 1000}}</td>
     </tr>
     <tr>
-        <td>print_tests()</td>
+        <td><pre>print_tests()</pre></td>
         <td>Prints the available tests.</td>
-    </tr>
-    <tr>
-        <td>write_to('file')</td>
-        <td>Writs accumulated data to file.</td>
     </tr>
 </table>
 
@@ -482,50 +485,68 @@ This library includes the following modules: dimension, incompatible_measurement
 </code></pre></div>
 
 
-<h2 id="quantum_dispatcher">Quantum_Dispatcher<a class="headerlink" href="#quantum_dispatcher" title="Permanent link">&para;</a></h2>
+<h2 id="quantumdispatcher">QuantumDispatcher<a class="headerlink" href="#quantumdispatcher" title="Permanent link">&para;</a></h2>
 <p>An abstract base class to generalize the dispatching and running of operations across a system. Offers an interface from which future classes that work with a quantum network can run the tests.
-<table style = 'width:90%'>
+<table style='width:90%'>
     <tr>
         <th>Methods</th>
         <th>Descriptions</th>
     </tr>
     <tr>
-        <td><strong>init</strong>(backends)</td>
+        <td><pre><strong>init</strong>(backends)</pre></td>
         <td>Constructor requiring a list of backends.</td>
     <tr>
             <th>Abstract Methods</th>
             <th>Description</th>
     </tr>
     <tr>
-        <td>run_and_transmit(input_registers,output_registers,pre_operations,post_operations,shot)</td>
+        <td><pre>run_and_transmit(
+                pre_operations,
+                post_operations,
+                shots)</pre></td>
         <td>Dispatches a single job to the quantum system. The circuit specified in pre_operations is ran on the device responsible for preparing states. The states from input_registers are then sent to the output_registers. Next, the operations in the list post_operations are executed. The index of the operation in this array corresponds to which device it runs on. Returns a dictionary with the counts from measurements on the system. 
     <tr>
-        <td>multi_run_and_transmit(input_registers,output_register,pre_operations,post_operations,shot)</td>
+        <td><pre>multi_run_and_transmit(
+            pre_operations,
+            post_operations,
+            shots)</pre></td>
         <td>Dispatches multiple jobs to the quantum system. Pre_operations is a list of circuits. Post_operations is a list of lists, representing operations to run on different machines. Returns a list of dictionaries with the counts from measurements on the system.</td>
             </tr>
     <tr>
-        <td>batch_run_and_transmit(input_registers,output_registers,pre_operations,post_operations,shot)</td>
+        <td><pre>batch_run_and_transmit(
+            pre_operations,
+            post_operations,
+            shots)</td>
         <td>Distpatches and runs all permuations of the given operations. Returns a list of dictionaries with the counts from measurements on the system.</td>
 </table></p>
 <h3 id="localdispatcher">LocalDispatcher<a class="headerlink" href="#localdispatcher" title="Permanent link">&para;</a></h3>
 <p>Implements the Quantum_Dispatcher interface for running tests on a single computer. Note that the input and output register parameters are not used by this class.
-<table style = 'width:90%'>
+<table>
     <tr>
         <th>Methods</th>
         <th>Descriptions</th>
     </tr>
     <tr>
-        <td><strong>init</strong>(backends)</td>
+        <td width="50%"><pre><strong>init</strong>(backends)<pre></td>
         <td>Only the first element in the list backends is used.</td>
     <tr>
-        <td>run_and_transmit(input_registers,output_registers,pre_operations,post_operations,shot)</td>
+        <td><pre>run_and_transmit(
+        pre_operations,
+        post_operations,
+        shots)</pre></td>
         <td>See QuantumDispatcher. Does not use the registers. Returns counts from running the circuits.
     <tr>
-        <td>multi_run_and_transmit(input_registers,output_register,pre_operations,post_operations,shot)</td>
+        <td><pre>multi_run_and_transmit(
+        pre_operations,
+        post_operations,
+        shots)</pre></td>
         <td>See QuantumDispatcher. Does not use the registers. Returns a list of counts from running the circuits.</td>
             </tr>
     <tr>
-        <td>batch_run_and_transmit(input_registers,output_registers,pre_operations,post_operations,shot)</td>
+        <td><pre>batch_run_and_transmit(
+        pre_operations,
+        post_operations,
+        shots)</pre></td>
         <td>See QuantumDispatcher. Does not use the registers. Returns a list of counts from running all permutations of the circuits.</td>
 </table><br><br>
 Below is an example of creating an instance of LocalDispatcher.</p>
@@ -534,43 +555,65 @@ Below is an example of creating an instance of LocalDispatcher.</p>
 </code></pre></div>
 
 
-<h1 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h1>
+<h1 id="device-independent-test-modules">Device Independent Test Modules<a class="headerlink" href="#device-independent-test-modules" title="Permanent link">&para;</a></h1>
 <h2 id="dimension">Dimension<a class="headerlink" href="#dimension" title="Permanent link">&para;</a></h2>
-<h2 id="incompatible_measurement">Incompatible_Measurement<a class="headerlink" href="#incompatible_measurement" title="Permanent link">&para;</a></h2>
-<p>A module to conduct tests of Bell violations from incompatible measurements.
-<table style='width:90%'>
+<table>
     <tr>
         <th>Methods</th>
         <th>Descriptions</th>
     </tr>
     <tr>
-        <td>run_test(dispatcher,tolerance,shots)</td>
-        <td>Sends a incompatible measurement test to run on dispatcher.<td>
+        <td width="50%"><pre>run_test(dispatcher,
+        tolerance,
+        shots)</pre></td>
+        <td width="50%">Runs dimensionality test for 2-qubits system. Alice prepares all possible
+    orthogonal states (no rotation), and Bob measures in corresponding canonical
+    states. Returns a tuple of (pass/fail, test value).<td>
+    </tr>
+</table>
+
+<h2 id="incompatible-measurement">Incompatible Measurement<a class="headerlink" href="#incompatible-measurement" title="Permanent link">&para;</a></h2>
+<p>A module to conduct tests of Bell violations from incompatible measurements.
+<table>
+    <tr>
+        <th>Methods</th>
+        <th>Descriptions</th>
     </tr>
     <tr>
-        <td>bb84_states()</td>
-        <td>Returns a circuit that creates the 0, 1, +, and - states on 4 registers.</td>
+        <td width="50%"><pre>run_test(dispatcher,
+        tolerance,
+        shots)</pre></td>
+        <td>Runs all incompatible measurements tests (seperate circuits). Creates and runs all cases x={0,1,2,3} and y={0,1} then determines if the bell inequality has been violated.  Returns a tuple of (pass/fail, test value).<td>
     </tr>
     <tr>
-        <td>measure_circuit(y)</td>
-        <td>Returns Bob's circuit measuring 4 registers in the pi/8 (y=0) or 3*pi/8 (y=1) rotated basis.</td>
-    </tr>
-    <tr>
-        <td>bell_violation(y0_counts,y1_counts,y0_shots,y1_shots)</td>
-        <td>Returns the value of the test minus the classical value.</td>
-    </tr>
-    <tr>
-        <td>bell_score(y0_probs,y1_probs)</td>
-        <td>Returns the value of the test from the conditional probability distribution.</td>
-    </tr>
-    <tr>
-        <td>conditional_probs(counts,shots)</td>
-        <td>Parses the counts from a job and returns a 2x4 matrix of conditional probabilities.</td>
+        <td><pre>run_test_parallel(dispatcher,
+        tolerance,
+        shots)</pre></td>
+        <td>Runs all incompatible measurements test on 4 qubits in parallel for better performance.  Returns a tuple of (pass/fail, test value).</td>
     </tr>
 </table></p>
 <h2 id="entanglement">Entanglement<a class="headerlink" href="#entanglement" title="Permanent link">&para;</a></h2>
+<table>
+    <tr>
+        <th>Methods</th>
+        <th>Descriptions</th>
+    </tr>
+    <tr>
+        <td width="50%"><pre>run_test(dispatcher,
+        tolerance,
+        shots)</pre></td>
+        <td>Runs a CHSH test with bell state and checks for Tsirelson bound within tolerance. Returns a tuple of (pass/fail, test value).<td>
+    </tr>
+    <tr>
+        <td><pre>run_test_parallel(dispatcher,
+        tolerance,
+        shots)</pre></td>
+        <td>Runs a CHSH test with bell state and checks for Tsirelson bound within tolerance. Tests are run in parallel for better performance. Returns a tuple of (pass/fail, test value). </td>
+    </tr>
+</table>
+
 <h1 id="example-code">Example Code<a class="headerlink" href="#example-code" title="Permanent link">&para;</a></h1>
-<h2 id="incompatible-measurement-example">Incompatible Measurement Example<a class="headerlink" href="#incompatible-measurement-example" title="Permanent link">&para;</a></h2>
+<h2 id="handshake-example">HandShake Example<a class="headerlink" href="#handshake-example" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Importing standard Qiskit libraries and configuring account</span>
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">execute</span><span class="p">,</span> <span class="n">Aer</span><span class="p">,</span> <span class="n">IBMQ</span>
 <span class="kn">from</span> <span class="nn">qiskit.compiler</span> <span class="kn">import</span> <span class="n">transpile</span><span class="p">,</span> <span class="n">assemble</span>
@@ -586,135 +629,52 @@ Below is an example of creating an instance of LocalDispatcher.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">context</span>
-<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">handshake</span>
-<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">quantum_communicator</span>
+<span class="kn">from</span> <span class="nn">device_independent_test.handshake</span> <span class="kn">import</span> <span class="n">HandShake</span>
+<span class="kn">from</span> <span class="nn">device_independent_test.quantum_communicator</span> <span class="kn">import</span> <span class="n">LocalDispatcher</span>
 <span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">entanglement</span>
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>ibmqfactory.load_account:WARNING:2020-06-29 23:49:59,350: Credentials are already in use. The existing account in the session will be replaced.
-</code></pre></div>
-
-
 <p>Below is an incompatibility test that should output a violation.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">communicator</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">handshake</span><span class="o">.</span><span class="n">HandShake</span><span class="p">(</span><span class="n">communicator</span><span class="p">)</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">measurement_incompatibility</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mi">5000</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-<span class="c1">#obj.entanglement(0.0,5000)</span>
-<span class="c1">#entanglement.run_test_parallel(communicator,0.0,1000)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">communicator</span> <span class="o">=</span> <span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+<span class="n">handshake</span> <span class="o">=</span> <span class="n">HandShake</span><span class="p">(</span><span class="n">communicator</span><span class="p">)</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">measurement_incompatibility</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">entanglement</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">dimensionality</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 </code></pre></div>
 
 
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───────────┐┌─┐
-q_0: ┤ circuit13 ├┤M├
-     └───────────┘└╥┘
-c_0: ══════════════╩═
-                     </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───────────┐┌─┐
-q_0: ┤ circuit68 ├┤M├
-     └───────────┘└╥┘
-c_0: ══════════════╩═
-                     </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌───────────┐┌─┐
-q_0: ┤ X ├┤ circuit13 ├┤M├
-     └───┘└───────────┘└╥┘
-c_0: ═══════════════════╩═
-                          </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌───────────┐┌─┐
-q_0: ┤ X ├┤ circuit68 ├┤M├
-     └───┘└───────────┘└╥┘
-c_0: ═══════════════════╩═
-                          </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌───────────┐┌─┐
-q_0: ┤ H ├┤ circuit13 ├┤M├
-     └───┘└───────────┘└╥┘
-c_0: ═══════════════════╩═
-                          </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌───────────┐┌─┐
-q_0: ┤ H ├┤ circuit68 ├┤M├
-     └───┘└───────────┘└╥┘
-c_0: ═══════════════════╩═
-                          </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌───┐┌───────────┐┌─┐
-q_0: ┤ X ├┤ H ├┤ circuit13 ├┤M├
-     └───┘└───┘└───────────┘└╥┘
-c_0: ════════════════════════╩═
-                               </pre>
-
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌───┐┌───────────┐┌─┐
-q_0: ┤ X ├┤ H ├┤ circuit68 ├┤M├
-     └───┘└───┘└───────────┘└╥┘
-c_0: ════════════════════════╩═
-                               </pre>
-
-<div class="codehilite"><pre><span></span><code>Failed Measurment Incompatibility with value:  6.8334
+<div class="codehilite"><pre><span></span><code>Passed Measurment Incompatibility with value:  6.806
+Passed Entanglement with value:  2.83
+Passed Dimensionality with value:  1.0
 
 
 
 
 
-(False, 6.8334)
+(True, 1.0)
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code><span class="n">test</span> <span class="o">=</span> <span class="s2">&quot;1101&quot;</span>
-<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<p>We can run all the test with specific parameters.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dimensionality&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;shots&quot;</span><span class="p">:</span> <span class="mi">3000</span> <span class="p">},</span> 
+    <span class="s2">&quot;entanglement&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;shots&quot;</span><span class="p">:</span> <span class="mi">2000</span> <span class="p">},</span> 
+    <span class="s2">&quot;measurement_incompatibility&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;shots&quot;</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">test_all</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>11
-</code></pre></div>
+<div class="codehilite"><pre><span></span><code>Passed Dimensionality with value:  1.0
+Passed Measurment Incompatibility with value:  6.835999999999999
+Passed Entanglement with value:  2.8489999999999998
 
 
-<div class="codehilite"><pre><span></span><code><span class="n">test</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">test</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">test</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">test</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
 
 
-<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐┌─┐
-q_0: ┤ X ├┤M├
-     └───┘└╥┘
-q_1: ──────╫─
-           ║ 
-c_0: ══════╩═
 
-c_1: ════════
-             </pre>
-
-<p>Below is a hard coded example of the incompatibility test failing when Bob does not do the correct operations.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">incompatible_measurement</span>
-<span class="n">dispatch</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
-
-<span class="c1"># create bb84 states</span>
-<span class="n">pre_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bb84_states</span><span class="p">()]</span>
-
-<span class="c1"># measure in the wrong basis</span>
-<span class="n">qc0</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">qc0</span><span class="o">.</span><span class="n">u3</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">qc0</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
-<span class="n">qc1</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">qc1</span><span class="o">.</span><span class="n">u3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">qc1</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
-<span class="n">post_ops</span> <span class="o">=</span> <span class="p">[[</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)],[</span><span class="n">qc0</span><span class="p">,</span><span class="n">qc1</span><span class="p">]]</span>
-<span class="n">counts</span> <span class="o">=</span> <span class="n">dispatch</span><span class="o">.</span><span class="n">batch_run_and_transmit</span><span class="p">(</span><span class="n">pre_ops</span><span class="p">,</span><span class="n">post_ops</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">violation</span> <span class="o">=</span> <span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bell_violation</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">violation</span><span class="p">)</span>
-</code></pre></div>
-
-
-<div class="codehilite"><pre><span></span><code>1.9869999999999999
-</code></pre></div>
-
-
-<div class="codehilite"><pre><span></span><code>
+True
 </code></pre></div>
                 
               

@@ -251,6 +251,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="simulator_vs_quantum.html" title="Simulator vs. Quantum Machine" class="md-nav__link">
+      Simulator vs. Quantum Machine
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -387,9 +399,42 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Dispatcher Example
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="Quantum_Communicator_Example.html" title="Dispatcher Example" class="md-nav__link md-nav__link--active">
       Dispatcher Example
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -416,6 +461,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -430,50 +492,84 @@
                   
                 
                 
-                <div class="codehilite"><pre><span></span><code><span class="c1"># Importing standard Qiskit libraries and configuring account</span>
+                <h1 id="using-the-quantumdispatcher-class">Using the QuantumDispatcher Class<a class="headerlink" href="#using-the-quantumdispatcher-class" title="Permanent link">&para;</a></h1>
+<p>A Dispatcher has 3 functions: <code>run_and_transmit</code>, <code>multi_run_and_transmit</code>, and <code>batch_run_and_transmit</code>. 
+<code>run_and_transmit</code> takes in 3 parameters:
+  * pre-operation: a circuit of operations to prepare a transmitted state
+  * post-operations: a list operations to run on different devices
+  * the number of shots to run the circuit.</p>
+<p><code>run_and_transmit</code> is intended to run a single job, while <code>multi_run_and_transmit</code> is intended to run multiple job. For <code>multi_run_and_transmit</code> the preparation operations are expected to be a list of operations, and the post operations are expected to be a list of lists. The ith element of each list corresponds to the circuit ran as the ith job.
+<code>batch_run_and_transmit</code> creates and runs all permutations of operations given to it, both pre and post transmission. </p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>Consider the scenario for measurement incompatible testing. First, we prepare the BB84 states for Alice, and Bob measures based on the input he gets, y = 0 or y = 1.</p>
+<p>So we would like to make 2 measurements, once with Bob's input 0 and another with 1. We can instantaite a <code>LocalDispatcher</code> and call the method <code>multi_run_and_transmit</code> on this instance to accomplish this. To instantiate a <code>LocalDispatcher</code>, we need to feed in one device.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Importing standard Qiskit libraries and configuring account</span>
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">IBMQ</span>
-<span class="kn">from</span> <span class="nn">qiskit.tools.jupyter</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">qiskit.visualization</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">qiskit.providers.ibmq.managed</span> <span class="kn">import</span> <span class="n">IBMQJobManager</span>
+<span class="c1"># from qiskit.tools.jupyter import *</span>
+<span class="c1"># from qiskit.visualization import *</span>
+<span class="c1"># from qiskit.providers.ibmq.managed import IBMQJobManager</span>
 
 <span class="c1"># Loading your IBM Q account(s)</span>
-<span class="kn">import</span> <span class="nn">qiskit</span>
-<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">IBMQ</span>
 <span class="n">provider</span> <span class="o">=</span> <span class="n">IBMQ</span><span class="o">.</span><span class="n">load_account</span><span class="p">()</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">context</span>
-<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">quantum_communicator</span>
-<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">incompatible_measurement</span>
+<span class="kn">from</span> <span class="nn">device_independent_test.quantum_communicator</span> <span class="kn">import</span> <span class="n">LocalDispatcher</span>
 </code></pre></div>
 
 
-<h1 id="using-the-quantumdispatcher-class">Using the QuantumDispatcher Class<a class="headerlink" href="#using-the-quantumdispatcher-class" title="Permanent link">&para;</a></h1>
-<p>A Dispatcher has 3 functions: run_and_transmit(), multi_run_and_transmit(), and batch_run_and_transmit(). 
-Run_and_transmit takes in 5 parameters: input registers, output registers, a circuit of operations to prepare a transmitted state, a list operations to run on different devices, and the number of shots. Run_and_transmit() is intended to run a single job.
-Multi_run_and_transmit takes in similar parameters. However, the preparation operations are now expected to be a list of operations. Similarly, the post operations are expected to be a list of lists. The ith element of each list corresponds to the circuit ran as the ith job. 
-Batch_run_and_transmit creates and runs all permutations of operations given to it, both pre and post transmission. </p>
-<p>The cell below first creates a list of two operations to run to prepare states. Next, a list of two lists is created to define the operations desired after transmission. The first operation is the bb84 states and then Bob's measurement with y=0. The second is the bb84 states transmitted to Bob who measures when y=1. 
-To create the dispatcher, a list of devices is required in the constructor. As this is a local dispatcher, only one device is required. Next, a multi run is executed and the counts are stored.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">pre_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bb84_states</span><span class="p">(),</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">bb84_states</span><span class="p">()]</span>
-<span class="n">post_ops</span> <span class="o">=</span> <span class="p">[[</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)],</span>
-            <span class="p">[</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">measure_circuit</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">incompatible_measurement</span><span class="o">.</span><span class="n">measure_circuit</span><span class="p">(</span><span class="mi">1</span><span class="p">)]]</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_bb84_state</span><span class="p">():</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># create 1</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># create +</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># create -</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># ^</span>
+    <span class="k">return</span> <span class="n">qc</span>
 
-<span class="n">dispatch</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
-<span class="n">counts</span> <span class="o">=</span> <span class="n">dispatch</span><span class="o">.</span><span class="n">multi_run_and_transmit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">pre_ops</span><span class="p">,</span><span class="n">post_ops</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">measure_circuit</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="c1"># -pi/4 rotation for y=0, -3pi/4 rotation for y=1</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">u3</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">qc</span>
+
+<span class="c1"># initialization for two measurements - both preparing bb84 state</span>
+<span class="n">pre_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_bb84_state</span><span class="p">(),</span> <span class="n">get_bb84_state</span><span class="p">()]</span>
+
+<span class="c1"># one test sequence with QuantumCircuit(4) + measure_circuit(0)</span>
+<span class="c1"># and another with QuantumCircuit(4) + measure_circuit(1) </span>
+<span class="n">post_ops</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)],</span>
+    <span class="p">[</span><span class="n">measure_circuit</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">measure_circuit</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="p">]</span>
+
+<span class="n">dispatch</span> <span class="o">=</span> <span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">dispatch</span><span class="o">.</span><span class="n">multi_run_and_transmit</span><span class="p">(</span><span class="n">pre_ops</span><span class="p">,</span> <span class="n">post_ops</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code><span class="k">print</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+<p>The function returns the list of counts of each measurement.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">counts</span>
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>[{&#39;0000&#39;: 17, &#39;0111&#39;: 3, &#39;1011&#39;: 97, &#39;1100&#39;: 12, &#39;1001&#39;: 16, &#39;1111&#39;: 17, &#39;0100&#39;: 5, &#39;0010&#39;: 93, &#39;0110&#39;: 16, &#39;0011&#39;: 24, &#39;1000&#39;: 102, &#39;1010&#39;: 491, &#39;0001&#39;: 7, &#39;1110&#39;: 99, &#39;1101&#39;: 1}, {&#39;0000&#39;: 19, &#39;0111&#39;: 4, &#39;1011&#39;: 99, &#39;1100&#39;: 18, &#39;1001&#39;: 533, &#39;1111&#39;: 13, &#39;0100&#39;: 3, &#39;0101&#39;: 20, &#39;0010&#39;: 4, &#39;0011&#39;: 12, &#39;1000&#39;: 95, &#39;1010&#39;: 11, &#39;0001&#39;: 81, &#39;1110&#39;: 3, &#39;1101&#39;: 85}]
-</code></pre></div>
-
-
-<div class="codehilite"><pre><span></span><code>
+<div class="codehilite"><pre><span></span><code>[{&#39;1010&#39;: 193,
+  &#39;1111&#39;: 49,
+  &#39;0110&#39;: 234,
+  &#39;0011&#39;: 30,
+  &#39;0111&#39;: 42,
+  &#39;1011&#39;: 32,
+  &#39;0010&#39;: 211,
+  &#39;1110&#39;: 209},
+ {&#39;1010&#39;: 36,
+  &#39;1111&#39;: 211,
+  &#39;0110&#39;: 37,
+  &#39;0011&#39;: 210,
+  &#39;0111&#39;: 205,
+  &#39;1011&#39;: 218,
+  &#39;0010&#39;: 40,
+  &#39;1110&#39;: 43}]
 </code></pre></div>
                 
               

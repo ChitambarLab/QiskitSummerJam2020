@@ -262,6 +262,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="simulator_vs_quantum.html" title="Simulator vs. Quantum Machine" class="md-nav__link">
+      Simulator vs. Quantum Machine
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -448,10 +460,6 @@
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>ibmqfactory.load_account:WARNING:2020-06-30 19:16:45,466: Credentials are already in use. The existing account in the session will be replaced.
-</code></pre></div>
-
-
 <h1 id="dimensionality-testing">Dimensionality Testing<a class="headerlink" href="#dimensionality-testing" title="Permanent link">&para;</a></h1>
 <p>The dimensionality test determines if a computer can properly prepare a system of at least a certain dimension. In the code below, Alice wants to encode {0,1,2,3} into a two-qubit system and transmit this to Bob. What if Alice is unable to generate a two qubit system? Below Alice is unable to prepare a second qubit and can only encode one classical bit. Because of this, the probability that Bob can recover the classical information drops from 1 (disregarding noise) to 0.5.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># alice prepares the complete set of orthogonal states</span>
@@ -496,22 +504,52 @@ With 2 qubits, this test can succeed with probability 1.
 
 
 <h1 id="incompatible-measurement-testing">Incompatible Measurement Testing<a class="headerlink" href="#incompatible-measurement-testing" title="Permanent link">&para;</a></h1>
-<p>This module determines if a quantum device can perform incompatible measurements. Recall that incompatible measurments are those which do not commute, measuring in the Z and X bases, for example. Below the compatible measurement from the theory notebook is performed. Bob's first (y=0) projective measurement performs the following rotation (the global phase on the second basis state has been changed):
+<p>This module determines if a quantum device can perform incompatible measurements. Recall that incompatible measurments are those which do not commute, measuring in the Z and X bases, for example. Below the compatible measurement from the theory notebook is performed. Bob's first (y=0) projective measurement performs the following rotation (the global phase on the second basis state has been changed):</p>
+<div>
+<div class="MathJax_Preview">
 \begin{pmatrix}
-    cos(\theta) &amp; sin(\theta)\
-    -sin(\theta) &amp; cos(\theta)\
+    cos(\theta) &amp; sin(\theta)\\
+    -sin(\theta) &amp; cos(\theta)\\
 \end{pmatrix}
-Thus we can perform Bob's measurement via a Y rotation by - <span><span class="MathJax_Preview">2\theta</span><script type="math/tex">2\theta</script></span> then a measurment in the computational basis. Now let's construct the matrix for the compatible measurement. This is given by:
+</div>
+<script type="math/tex; mode=display">
 \begin{pmatrix}
-    sin(\theta + \pi /4) &amp; -cos(\theta + \pi /4)\
-    cos(\theta + \pi /4) &amp; sin(\theta + \pi /4)\
+    cos(\theta) & sin(\theta)\\
+    -sin(\theta) & cos(\theta)\\
 \end{pmatrix}
-Using a couple trig properties, this becomes
+</script>
+</div>
+<p>Thus we can perform Bob's measurement via a Y rotation by - <span><span class="MathJax_Preview">2\theta</span><script type="math/tex">2\theta</script></span> then a measurment in the computational basis. Now let's construct the matrix for the compatible measurement. This is given by:</p>
+<div>
+<div class="MathJax_Preview">
 \begin{pmatrix}
-    cos(\pi /4 -\theta) &amp; -sin(\pi /4 -\theta)\
-    sin(\pi / 4 -\theta) &amp; cos(\pi /4 -\theta)\
+    sin(\theta + \pi /4) &amp; -cos(\theta + \pi /4)\\
+    cos(\theta + \pi /4) &amp; sin(\theta + \pi /4)\\
 \end{pmatrix}
-The above matrix is a rotation of <span><span class="MathJax_Preview">2(\pi /4 -\theta)</span><script type="math/tex">2(\pi /4 -\theta)</script></span> around the Y axis. In the incompatible measurement test, we use <span><span class="MathJax_Preview">\theta = \pi / 8</span><script type="math/tex">\theta = \pi / 8</script></span>. Thus, this measurement is achieved via a rotation of <span><span class="MathJax_Preview">\pi / 4</span><script type="math/tex">\pi / 4</script></span>.<br><br>
+</div>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+    sin(\theta + \pi /4) & -cos(\theta + \pi /4)\\
+    cos(\theta + \pi /4) & sin(\theta + \pi /4)\\
+\end{pmatrix}
+</script>
+</div>
+<p>Using a couple trig properties, this becomes</p>
+<div>
+<div class="MathJax_Preview">
+\begin{pmatrix}
+    cos(\pi /4 -\theta) &amp; -sin(\pi /4 -\theta)\\
+    sin(\pi / 4 -\theta) &amp; cos(\pi /4 -\theta)\\
+\end{pmatrix}
+</div>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+    cos(\pi /4 -\theta) & -sin(\pi /4 -\theta)\\
+    sin(\pi / 4 -\theta) & cos(\pi /4 -\theta)\\
+\end{pmatrix}
+</script>
+</div>
+<p>The above matrix is a rotation of <span><span class="MathJax_Preview">2(\pi /4 -\theta)</span><script type="math/tex">2(\pi /4 -\theta)</script></span> around the Y axis. In the incompatible measurement test, we use <span><span class="MathJax_Preview">\theta = \pi / 8</span><script type="math/tex">\theta = \pi / 8</script></span>. Thus, this measurement is achieved via a rotation of <span><span class="MathJax_Preview">\pi / 4</span><script type="math/tex">\pi / 4</script></span>.<br><br>
 The code snippet below implements this compatible measurement. This set of projective measurements should not violate the classical bounds.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">dispatch</span> <span class="o">=</span> <span class="n">quantum_communicator</span><span class="o">.</span><span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
 
@@ -536,8 +574,8 @@ The code snippet below implements this compatible measurement. This set of proje
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>Incompatible measurement test score:  3.9909999999999997
-Classical bound is 6. Quantum wystems score up to about 6.8.
+<div class="codehilite"><pre><span></span><code>Incompatible measurement test score:  4.002
+Classical bound is 6. Quantum systems score up to about 6.8.
 </code></pre></div>
 
 
@@ -580,8 +618,27 @@ Classical bound is 6. Quantum wystems score up to about 6.8.
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>CHSH test score:  0.72
-Classical bound is of magnitude 2. Quantum systems can go up to about 2.828
+<div class="codehilite"><pre><span></span><code>---------------------------------------------------------------------------
+
+KeyError                                  Traceback (most recent call last)
+
+&lt;ipython-input-4-89c1530e5477&gt; in &lt;module&gt;
+     24 counts = dispatch.batch_run_and_transmit([qc],post_ops,shots) # run all combinations
+     25 
+---&gt; 26 expected_ZW = entanglement.compute_expectation_for_CHSH(counts[0], shots)
+     27 expected_ZV = entanglement.compute_expectation_for_CHSH(counts[1], shots)
+     28 expected_XW = entanglement.compute_expectation_for_CHSH(counts[2], shots)
+
+
+~/code/QiskitSummerJam2020/device_independent_test/entanglement.py in compute_expectation_for_CHSH(counts, shots)
+     15 # @returns  float expectation value
+     16 def compute_expectation_for_CHSH(counts, shots):
+---&gt; 17     return (counts[&quot;00&quot;] + counts[&quot;11&quot;] - counts[&quot;01&quot;] - counts[&quot;10&quot;])/shots
+     18 
+     19 # @brief    Runs a CHSH test (seperate circuits)
+
+
+KeyError: &#39;11&#39;
 </code></pre></div>
 
 
@@ -630,11 +687,6 @@ Classical bound is of magnitude 2. Quantum systems can go up to about 2.828
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>CHSH test score:  2.26
-Classical bound is of magnitude 2. Quantum systems can go up to about 2.828
-</code></pre></div>
-
-
 <p>As this code demonstrates, when the computer often runs the correct circuit, it can still violate the classical bounds. This makes it more difficult to decide when the system fails a test. Our test modules expect tolerances for all tests. The tolerance of the result lets us decide how close to perfect functionality we require.</p>
 <div class="codehilite"><pre><span></span><code>
 </code></pre></div>
@@ -671,13 +723,13 @@ Classical bound is of magnitude 2. Quantum systems can go up to about 2.828
           </a>
         
         
-          <a href="theory_device_independent_tests.html" title="Device-Independent Tests" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="simulator_vs_quantum.html" title="Simulator vs. Quantum Machine" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Device-Independent Tests
+                Simulator vs. Quantum Machine
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
