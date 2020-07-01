@@ -58,7 +58,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#entanglement-testing" class="md-skip">
+        <a href="#entanglement-testing-chsh" class="md-skip">
           Skip to content
         </a>
       
@@ -310,7 +310,7 @@
 
 
   <li class="md-nav__item">
-    <a href="theory_dimension_tests.md" title="Verifying Dimension" class="md-nav__link">
+    <a href="theory_dimension_tests.html" title="Verifying Dimension" class="md-nav__link">
       Verifying Dimension
     </a>
   </li>
@@ -430,38 +430,217 @@
                   
                 
                 
-                <h1 id="entanglement-testing">Entanglement Testing<a class="headerlink" href="#entanglement-testing" title="Permanent link">&para;</a></h1>
+                <h1 id="entanglement-testing-chsh">Entanglement Testing (CHSH)<a class="headerlink" href="#entanglement-testing-chsh" title="Permanent link">&para;</a></h1>
+<p>We test the entanglement of two qubits by whether the the bell state violates CHSH inequality and by how much.</p>
+<p>Initially, we prepare a shared bell state for Alice and Bob <span><span class="MathJax_Preview">\frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)</span><script type="math/tex">\frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)</script></span>.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Importing standard Qiskit libraries and configuring account</span>
-<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">execute</span><span class="p">,</span> <span class="n">Aer</span><span class="p">,</span> <span class="n">IBMQ</span>
-<span class="kn">from</span> <span class="nn">qiskit.compiler</span> <span class="kn">import</span> <span class="n">transpile</span><span class="p">,</span> <span class="n">assemble</span>
-<span class="kn">from</span> <span class="nn">qiskit.tools.jupyter</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">qiskit.visualization</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">execute</span><span class="p">,</span> <span class="n">IBMQ</span>
+<span class="kn">from</span> <span class="nn">qiskit.tools.monitor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">qiskit.providers.ibmq.managed</span> <span class="kn">import</span> <span class="n">IBMQJobManager</span>
 
 <span class="c1"># Loading your IBM Q account(s)</span>
 <span class="kn">import</span> <span class="nn">qiskit</span>
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">IBMQ</span>
 
+<span class="n">provider</span> <span class="o">=</span> <span class="n">IBMQ</span><span class="o">.</span><span class="n">load_account</span><span class="p">()</span>
+
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">device_independent_test.entanglement</span> <span class="kn">import</span> <span class="n">EntanglementTest</span>
+<span class="kn">import</span> <span class="nn">context</span>
+<span class="kn">from</span> <span class="nn">device_independent_test</span> <span class="kn">import</span> <span class="n">entanglement</span>
+
+<span class="k">def</span> <span class="nf">initial_state</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">create_bell_state</span><span class="p">()</span>
+
+<span class="n">initial_state</span><span class="p">()</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code><span class="n">test</span> <span class="o">=</span> <span class="n">EntanglementTest</span><span class="p">()</span>
-<span class="n">test</span><span class="o">.</span><span class="n">run_CHSH_test</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;ibmq_qasm_simulator&quot;</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">     ┌───┐     
+q_0: ┤ H ├──■──
+     └───┘┌─┴─┐
+q_1: ─────┤ X ├
+          └───┘</pre>
+
+<p>Then, Alice measures with observables <span><span class="MathJax_Preview">\{X, Z\}</span><script type="math/tex">\{X, Z\}</script></span>, and Bob measures with observables <span><span class="MathJax_Preview">\{H, H'\}</span><script type="math/tex">\{H, H'\}</script></span>, where <span><span class="MathJax_Preview">X, Z</span><script type="math/tex">X, Z</script></span> are Pauli operator and <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> is a Hardamard operator, and <span><span class="MathJax_Preview">H' = \begin{pmatrix} 1 &amp; -1 \\ -1 &amp; -1 \end{pmatrix}</span><script type="math/tex">H' = \begin{pmatrix} 1 & -1 \\ -1 & -1 \end{pmatrix}</script></span>.</p>
+<p>Measuring in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span> basis is a default measurement, and we get the following equivalent circuit. Note that <span><span class="MathJax_Preview">H = (X+Z)/2</span><script type="math/tex">H = (X+Z)/2</script></span> and <span><span class="MathJax_Preview">H' = (X-Z)/2</span><script type="math/tex">H' = (X-Z)/2</script></span>.</p>
+<ul>
+<li>measure in <span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span> = <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> + measure in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span></li>
+<li>measure in <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span> = <span><span class="MathJax_Preview">SHTH</span><script type="math/tex">SHTH</script></span> + measure in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span></li>
+<li>measure in <span><span class="MathJax_Preview">H'</span><script type="math/tex">H'</script></span> = <span><span class="MathJax_Preview">SHT^\dagger H</span><script type="math/tex">SHT^\dagger H</script></span> + measure in <span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span></li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Alice measures with observable Z and Bob measures with observable H</span>
+<span class="n">measure_ZH</span> <span class="o">=</span> <span class="n">initial_state</span><span class="p">()</span>
+<span class="n">measure_ZH</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZH</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZH</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZH</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZH</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">measure_ZH</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><code>ibmqfactory.load_account:WARNING:2020-06-26 16:49:59,854: Credentials are already in use. The existing account in the session will be replaced.
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">        ┌───┐                          ░ ┌─┐   
+   q_0: ┤ H ├──■───────────────────────░─┤M├───
+        └───┘┌─┴─┐┌───┐┌───┐┌───┐┌───┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├┤ S ├┤ H ├┤ T ├┤ H ├─░──╫─┤M├
+             └───┘└───┘└───┘└───┘└───┘ ░  ║ └╥┘
+meas_0: ══════════════════════════════════╩══╬═
+                                             ║ 
+meas_1: ═════════════════════════════════════╩═
+                                               </pre>
 
-
-
-
-
-{&#39;received&#39;: 2.844, &#39;expected&#39;: 2.8284271247461903}
+<div class="codehilite"><pre><span></span><code><span class="c1"># Alice measures with observable X and Bob measures with observable H</span>
+<span class="n">measure_XH</span> <span class="o">=</span> <span class="n">initial_state</span><span class="p">()</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">measure_XH</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
+
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">        ┌───┐     ┌───┐                ░ ┌─┐   
+   q_0: ┤ H ├──■──┤ H ├────────────────░─┤M├───
+        └───┘┌─┴─┐├───┤┌───┐┌───┐┌───┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├┤ S ├┤ H ├┤ T ├┤ H ├─░──╫─┤M├
+             └───┘└───┘└───┘└───┘└───┘ ░  ║ └╥┘
+meas_0: ══════════════════════════════════╩══╬═
+                                             ║ 
+meas_1: ═════════════════════════════════════╩═
+                                               </pre>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Alice measures with observable Z and Bob measures with observable H&#39;</span>
+<span class="n">measure_ZHp</span> <span class="o">=</span> <span class="n">initial_state</span><span class="p">()</span>
+<span class="n">measure_ZHp</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZHp</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZHp</span><span class="o">.</span><span class="n">tdg</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZHp</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_ZHp</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">measure_ZHp</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">        ┌───┐                            ░ ┌─┐   
+   q_0: ┤ H ├──■─────────────────────────░─┤M├───
+        └───┘┌─┴─┐┌───┐┌───┐┌─────┐┌───┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├┤ S ├┤ H ├┤ TDG ├┤ H ├─░──╫─┤M├
+             └───┘└───┘└───┘└─────┘└───┘ ░  ║ └╥┘
+meas_0: ════════════════════════════════════╩══╬═
+                                               ║ 
+meas_1: ═══════════════════════════════════════╩═
+                                                 </pre>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Alice measures with observable X and Bob measures with observable H&#39;</span>
+<span class="n">measure_XHp</span> <span class="o">=</span> <span class="n">initial_state</span><span class="p">()</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">tdg</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">measure_XHp</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+
+
+<pre style="word-wrap: normal;white-space: pre;background: #fff0;line-height: 1.1;font-family: &quot;Courier New&quot;,Courier,monospace">        ┌───┐     ┌───┐                  ░ ┌─┐   
+   q_0: ┤ H ├──■──┤ H ├──────────────────░─┤M├───
+        └───┘┌─┴─┐├───┤┌───┐┌─────┐┌───┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├┤ S ├┤ H ├┤ TDG ├┤ H ├─░──╫─┤M├
+             └───┘└───┘└───┘└─────┘└───┘ ░  ║ └╥┘
+meas_0: ════════════════════════════════════╩══╬═
+                                               ║ 
+meas_1: ═══════════════════════════════════════╩═
+                                                 </pre>
+
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">run_job</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">shots</span><span class="p">):</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">),</span> <span class="n">shots</span><span class="o">=</span><span class="n">shots</span><span class="p">)</span>
+    <span class="n">job_monitor</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">job</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">ZH_counts</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">measure_ZH</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">XH_counts</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">measure_XH</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">ZHp_counts</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">measure_ZHp</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">XHp_counts</span> <span class="o">=</span> <span class="n">run_job</span><span class="p">(</span><span class="n">measure_XHp</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>Job Status: job has successfully run
+Job Status: job has successfully run
+Job Status: job has successfully run
+Job Status: job has successfully run
+</code></pre></div>
+
+
+<p>To calculate the left-hand side of the CHSH inequality given by
+$$ \mid \langle ZH \rangle + \langle XH \rangle + \langle ZH' \rangle - \langle XH' \rangle \mid \leq 2 $$
+we compute the correlated expectation given by
+$$ \langle AB \rangle = Pr(00|AB) + Pr(11|AB) - Pr(01|AB) - Pr(10|AB). $$</p>
+<div class="codehilite"><pre><span></span><code><span class="n">exp_ZH</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">ZH_counts</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">exp_XH</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">XH_counts</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">exp_ZHp</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">ZHp_counts</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+<span class="n">exp_XHp</span> <span class="o">=</span> <span class="n">entanglement</span><span class="o">.</span><span class="n">compute_expectation_for_CHSH</span><span class="p">(</span><span class="n">XHp_counts</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+
+<span class="n">CHSH</span> <span class="o">=</span> <span class="n">exp_ZH</span> <span class="o">+</span> <span class="n">exp_XH</span> <span class="o">+</span> <span class="n">exp_ZHp</span> <span class="o">-</span> <span class="n">exp_XHp</span>
+<span class="k">print</span><span class="p">(</span><span class="n">CHSH</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>2.778
+</code></pre></div>
+
+
+<p>This shows the test violates CHSH inequality, and the initial state is indeed an entangled state. We know that bell state violates this inequality with the value <span><span class="MathJax_Preview">2\sqrt{2} \approx 2.828</span><script type="math/tex">2\sqrt{2} \approx 2.828</script></span>, and the value we get is pretty close to this value.</p>
+<p>This entanglement test can be done using the HandShake suite.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">device_independent_test.handshake</span> <span class="kn">import</span> <span class="n">HandShake</span>
+<span class="kn">from</span> <span class="nn">device_independent_test.quantum_communicator</span> <span class="kn">import</span> <span class="n">LocalDispatcher</span>
+
+<span class="n">dispatcher</span> <span class="o">=</span> <span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">provider</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;ibmq_qasm_simulator&#39;</span><span class="p">)])</span>
+<span class="n">handshake</span> <span class="o">=</span> <span class="n">HandShake</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span>
+
+<span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">entanglement</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">shots</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>Passed Entanglement with value:  2.87
+
+
+
+
+
+(True, 2.87)
+</code></pre></div>
+
+
+<p>We can run it on the actual quantum machine by instantiating the dispatcher with actual machine.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">qiskit.providers.ibmq</span> <span class="kn">import</span> <span class="n">least_busy</span>
+
+<span class="n">backend</span> <span class="o">=</span> <span class="n">least_busy</span><span class="p">(</span><span class="n">provider</span><span class="o">.</span><span class="n">backends</span><span class="p">())</span>
+<span class="n">dispatcher</span> <span class="o">=</span> <span class="n">LocalDispatcher</span><span class="p">([</span><span class="n">backend</span><span class="p">])</span>
+<span class="n">handshake</span> <span class="o">=</span> <span class="n">HandShake</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span>
+
+<span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">shots</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">handshake</span><span class="o">.</span><span class="n">entanglement</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code>Passed Entanglement with value:  2.582
+
+
+
+
+
+(True, 2.582)
+</code></pre></div>
+
+
+<p>The quantum computers can have quite a large error. They typically violate the CHSH inequality, however, a wide tolerance has to be used to ensure a pass. The allowed tolerance is decided by the computation task at hand.</p>
                 
               
               
