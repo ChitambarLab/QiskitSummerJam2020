@@ -1,6 +1,10 @@
 # Device Independent Tests for Quantum Networks
 
+[![stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://chitambarlab.github.io/QiskitSummerJam2020/index.html)
+
 *A prototype test suite for verifying unknown quantum devices.*
+
+Project Website: [chitambarlab.github.io/QiskitSummerJam2020/index.html](https://chitambarlab.github.io/QiskitSummerJam2020/index.html)
 
 The quantum internet will enable long-distance quantum cryptography, teleportation, and distributed quantum computation. Inevitably, long-distance quantum communications will require a large network of intermediary quantum-enabled devices. In a quantum network, a handshake protocol is required to verify the quantum capabilities of unknown quantum devices. 
 
