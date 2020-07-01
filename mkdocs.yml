@@ -13,6 +13,7 @@ nav:
       - Incompatible Measurement Test: Incompatible_Measurement.md
       - Entanglement Test: Entanglement.md
       - Validating Test Failures: when_tests_fail.md
+      - Simulator vs. Quantum Machine: simulator_vs_quantum.md
   - Device-Independence Theory:
       - Device-Independent Tests: theory_device_independent_tests.md
       - Verifying Dimension: theory_dimension_tests.md
